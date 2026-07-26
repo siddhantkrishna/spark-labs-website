@@ -1,4 +1,17 @@
+/**
+ * Environment configuration
+ * Values come from Vite environment variables at build time.
+ * Set these in .env (local) and Vercel → Settings → Environment Variables (prod).
+ */
 export const ENV = {
-  supabaseUrl: "https://wghldtfppulcwhqjacnl.supabase.co/rest/v1/",
-  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnaGxkdGZwcHVsY3docWphY25sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNTkxMDIsImV4cCI6MjEwMDYzNTEwMn0.iF4wQrrq8QItBKwpnW3xBgTGr1cO8CKUim6ycbj_UBo",
+  supabaseUrl: import.meta.env.VITE_SUPABASE_URL as string | undefined,
+  supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined,
+  formspreeId: import.meta.env.VITE_FORMSPREE_ID as string | undefined,
 };
+
+/**
+ * Returns true if any form-submission backend is configured
+ * (either Supabase or Formspree).
+ */
+export const hasFormBackend = (): boolean =>
+  Boolean(ENV.supabaseUrl && ENV.supabaseAnonKey) || Boolean(ENV.formspreeId);
