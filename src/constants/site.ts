@@ -24,8 +24,8 @@ export const SITE = {
   url: "https://sparklabs.in",
   email: "admissions@sparklabs.in",
   /** Digits only, international format, no plus — used for tel: and wa.me links. */
-  phone: "919999999999",
-  phoneDisplay: "+91 99999 99999",
+  phone: "916266916169",
+  phoneDisplay: "+91 62669 16169",
   whatsappMessage:
     "Hi Spark Labs! I'd like to know more about the AI Builder Program admissions.",
   address: {
