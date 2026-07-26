@@ -1,0 +1,8 @@
+# Spark Labs — https://sparklabs.in
+User-agent: *
+Allow: /
+
+# Keep transactional pages out of the index
+Disallow: /application-submitted
+
+Sitemap: https://sparklabs.in/sitemap.xml
