@@ -13,11 +13,8 @@ export interface SubmitResult {
  * Submits an admission / enquiry to the configured backend.
  *
  * Order of preference:
- *   1. Formspree   (VITE_FORMSPREE_ID)
- *   2. Supabase    (VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY, table `admissions`)
- *
- * Nothing is faked — if no backend is configured the caller receives a clear
- * `ok: false` result so it can surface a real error instead of a false success.
+ *   1. Supabase    (VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY, table `applications`)
+ *   2. Formspree   (VITE_FORMSPREE_ID)
  *
  * @param source  Where the submission came from ("admissions" | "contact" | "quick-apply")
  */
@@ -27,7 +24,6 @@ export async function submitAdmission(
 ): Promise<SubmitResult> {
   // Honeypot: real users never fill the hidden "company" field.
   if (payload.company && payload.company.trim().length > 0) {
-    // Pretend success to the bot; do not hit the backend.
     return { ok: true, message: "Thank you." };
   }
 
@@ -43,8 +39,7 @@ export async function submitAdmission(
   const record = { ...clean, source, submittedAt: new Date().toISOString() };
 
   try {
-    // Prefer Supabase as the system of record when configured — that's where
-    // the admin dashboard reads applications from.
+    // Prefer Supabase as the system of record when configured
     if (isSupabaseConfigured()) {
       await insertRow("applications", {
         student_name: clean.studentName,
@@ -61,7 +56,7 @@ export async function submitAdmission(
         preferred_batch: clean.preferredBatch,
         preferred_contact_time: clean.preferredContactTime,
         status: "new",
-        source,
+        source: source,
       });
     } else if (ENV.formspreeId) {
       const res = await fetch(`https://formspree.io/f/${ENV.formspreeId}`, {
