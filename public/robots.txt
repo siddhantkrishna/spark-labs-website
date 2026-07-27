@@ -7,5 +7,5 @@ Disallow: /admin
 Disallow: /admin/*
 Disallow: /application-submitted
 
-# Sitemap
+# Sitemap location
 Sitemap: https://siddhantkrishna.com/sitemap.xml
