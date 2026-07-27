@@ -51,6 +51,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://siddhantkrishna.com/blog/why-beginners-learn-ai-faster-by-building</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/blog/prompt-engineering-basics-for-teenagers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/blog/what-a-student-ai-portfolio-looks-like</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/blog/the-builder-mindset-explained</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://siddhantkrishna.com/careers</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -62,6 +82,26 @@
   </url>
   <url>
     <loc>https://siddhantkrishna.com/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/refund</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/cookies</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/code-of-conduct</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkrishna.com/disclaimer</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
