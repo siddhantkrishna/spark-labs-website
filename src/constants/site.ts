@@ -21,8 +21,8 @@ export const SITE = {
     "Transform complete beginners into confident AI builders through practical, project-based education.",
   vision: "Build India's most respected AI Learning Laboratory.",
   /** Update to the real production domain before launch. */
-  url: "https://sparklabs.in",
-  email: "admissions@sparklabs.in",
+  url: "https://siddhantkrishna.com",
+  email: "s@charvikon.com",
   /** Digits only, international format, no plus — used for tel: and wa.me links. */
   phone: "916266916169",
   phoneDisplay: "+91 62669 16169",
