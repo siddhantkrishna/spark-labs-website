@@ -61,7 +61,7 @@ export function Why() {
             <figure className="relative">
               <div className="overflow-hidden rounded-2xl border border-line shadow-card">
                 <img
-                  src="https://images.pexels.com/photos/5212695/pexels-photo-5212695.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
+                  src="https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785167608385-a4b8ce49-6584-47e8-9726-a21ec77798ca.png"
                   alt="Students collaborating on laptops with a mentor guiding them"
                   className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
                   loading="lazy"
