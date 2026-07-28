@@ -77,7 +77,7 @@ export function Journey() {
           <Reveal delay={200} className="mt-10">
             <div className="overflow-hidden rounded-2xl border border-line shadow-card">
               <img
-                src="https://images.pexels.com/photos/6502818/pexels-photo-6502818.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200"
+                src="https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785167616383-a6e728b5-5874-44d2-9e37-71342c6c3277.png"
                 alt="Mentor working through a problem with a student at a whiteboard"
                 className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
                 loading="lazy"
