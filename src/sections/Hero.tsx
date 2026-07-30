@@ -77,7 +77,7 @@ export function Hero() {
             <dl className="mt-14 grid grid-cols-2 divide-line overflow-hidden rounded-2xl border border-line bg-white/70 shadow-card backdrop-blur-sm sm:grid-cols-5 sm:divide-x">
               <Stat value={<CountUp to={6} />} label="Weeks" />
               <Stat value={<CountUp to={36} />} label="Live Sessions" />
-              <Stat value={<CountUp to={8} />} label="Students / Batch" />
+              <Stat value={<CountUp to={16} />} label="Students / Batch" />
               <Stat value="Offline" label="In-Person Lab" small />
               <Stat value="Project" label="Based Learning" small />
             </dl>
@@ -131,7 +131,7 @@ export function Hero() {
                 <Users className="h-4 w-4" />
               </span>
               <span className="leading-tight">
-                <span className="block text-[13px] font-semibold text-ink">8 builders</span>
+                <span className="block text-[13px] font-semibold text-ink">16 builders</span>
                 <span className="block font-mono text-[10px] tracking-wide text-faint">PER LAB · 3/DAY</span>
               </span>
             </div>
