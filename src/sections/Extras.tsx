@@ -21,7 +21,7 @@ import { useTestimonials } from "@/hooks/useContent";
 /* ------------------------------------------------------------------ */
 
 const TRUST = [
-  { icon: Users, label: "Max 8 per batch" },
+  { icon: Users, label: "Max 16 per batch" },
   { icon: ShieldCheck, label: "Beginner-safe" },
   { icon: Award, label: "Certificate + Portfolio" },
   { icon: MapPin, label: "In-person, Raigarh" },
@@ -95,10 +95,11 @@ export function FounderMessage() {
         <Reveal>
           <div className="mx-auto flex max-w-xs flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center">
             <span className="grid h-24 w-24 place-items-center rounded-full bg-accent-bright/15 font-display text-3xl font-bold text-accent-bright">
-              SL
+              SK
             </span>
-            <h3 className="mt-5 font-display text-lg font-bold text-white">Founder, Spark Labs</h3>
-            <p className="mt-1 font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase">
+            <h3 className="mt-5 font-display text-lg font-bold text-white">Siddhant Krishna</h3>
+            <p className="mt-1 text-[13px] font-semibold text-white/80">Founder &amp; CEO, Spark Labs</p>
+            <p className="mt-2 font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase">
               {SITE.legalName}
             </p>
           </div>
@@ -129,7 +130,7 @@ export function FounderMessage() {
 /* ------------------------------------------------------------------ */
 
 const TRUST_REASONS = [
-  { icon: Users, t: "Genuinely small batches", d: "A hard cap of eight students means your child is never a face in the crowd." },
+  { icon: Users, t: "Genuinely small batches", d: "A hard cap of sixteen students means your child is never a face in the crowd." },
   { icon: Eye, t: "Full transparency", d: "You see exactly what's taught, what's built, and what your child ships each week." },
   { icon: ShieldCheck, t: "A safe, focused space", d: "An in-person lab with a code of conduct — structured, supervised and screen-purposeful." },
   { icon: HeartHandshake, t: "Real mentorship", d: "Mentors who build, giving direct feedback on both the work and the thinking." },
@@ -251,7 +252,7 @@ export function LearningEnvironment() {
 const STEPS = [
   { t: "Apply online", d: "Fill the admissions form — it takes two minutes. No test, no coding required.", icon: FileCheck2 },
   { t: "Free counseling", d: "We call to understand your child's interests and answer every question.", icon: CalendarClock },
-  { t: "Lab visit & seat", d: "Visit the lab, meet a mentor, and confirm one of the eight seats in your batch.", icon: MapPin },
+  { t: "Lab visit & seat", d: "Visit the lab, meet a mentor, and confirm one of the sixteen seats in your batch.", icon: MapPin },
   { t: "Start building", d: "Begin the six-week journey and ship your first project in week one.", icon: Sparkles },
 ];
 
