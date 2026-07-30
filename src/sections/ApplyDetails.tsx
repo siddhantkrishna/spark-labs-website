@@ -78,7 +78,7 @@ const SPECS: [string, string][] = [
   ["Duration", "6 Weeks"],
   ["Sessions", "36 Live Practical Sessions"],
   ["Mode", "Offline · In-Person"],
-  ["Batch Size", "Max 8 Students"],
+  ["Batch Size", "Max 16 Students"],
   ["Batches", "3 Per Day"],
   ["Age Group", "13 – 18 Years"],
   ["Experience", "None Required"],
@@ -187,7 +187,7 @@ const FAQS = [
   },
   {
     q: "What if my child is a complete beginner?",
-    a: "Then this program was built for them. Week 1 assumes nothing. The eight-step teaching loop is specifically engineered to take a student from zero to confident builder in six weeks.",
+    a: "Then this program was built for them. Week 1 assumes nothing. The sixteen-step teaching loop is specifically engineered to take a student from zero to confident builder in six weeks.",
   },
   {
     q: "What should my child bring to class?",
@@ -195,7 +195,7 @@ const FAQS = [
   },
   {
     q: "How are classes conducted?",
-    a: "Entirely offline and in-person at our Raigarh lab. 36 practical sessions across six weeks, in batches of at most eight students, following the same disciplined build loop every single class.",
+    a: "Entirely offline and in-person at our Raigarh lab. 36 practical sessions across six weeks, in batches of at most sixteen students, following the same disciplined build loop every single class.",
   },
   {
     q: "Will my child receive a certificate?",
@@ -203,7 +203,7 @@ const FAQS = [
   },
   {
     q: "How many students are in each batch?",
-    a: "A maximum of eight. Never more. We run up to three batches per day so every student gets genuine mentorship, feedback and stage time.",
+    a: "A maximum of sixteen. Never more. We run up to three batches per day so every student gets genuine mentorship, feedback and stage time.",
   },
 ];
 
