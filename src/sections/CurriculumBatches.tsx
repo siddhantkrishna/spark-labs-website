@@ -95,7 +95,7 @@ const BATCH_BENEFITS = [
   { icon: UserCheck, t: "Individual attention", d: "No student hides in the back row. Every builder is seen, every session." },
   { icon: HeartHandshake, t: "True mentorship", d: "Mentors know each student's strengths, gaps and pace by name." },
   { icon: Hammer, t: "Better projects", d: "Deep feedback on every build means work that's genuinely portfolio-grade." },
-  { icon: MessageSquare, t: "More feedback", d: "Eight students means every voice gets heard and every question answered." },
+  { icon: MessageSquare, t: "More feedback", d: "Sixteen students means every voice gets heard and every question answered." },
   { icon: ShieldCheck, t: "Higher confidence", d: "A small room is a safe room — where beginners dare to try and fail." },
 ];
 
@@ -112,7 +112,7 @@ export function SmallBatches() {
                 07 · Why small batches
               </span>
               <div className="mt-8 font-display text-[clamp(6rem,14vw,11rem)] leading-none font-bold tracking-tighter">
-                8
+                16
               </div>
               <p className="mt-4 max-w-xs font-display text-xl leading-snug font-medium">
                 students per lab.
@@ -129,7 +129,7 @@ export function SmallBatches() {
           {/* benefits */}
           <div className="bg-paper p-10 sm:p-14">
             <h3 className="font-display text-2xl font-bold tracking-tight text-ink">
-              What eight makes possible
+              What sixteen makes possible
             </h3>
             <ul className="mt-8 space-y-6">
               {BATCH_BENEFITS.map((b, i) => (
@@ -163,7 +163,7 @@ const RECEIVE = [
   { icon: Award, t: "Certificate", d: "Completion certificate from Charvikon Training & Research Centre." },
   { icon: FileText, t: "Project Documentation", d: "Written specs and retros for every single build." },
   { icon: HeartHandshake, t: "Mentorship", d: "Direct, in-person access to mentors who build." },
-  { icon: Users, t: "Community", d: "A batch of eight builders who push each other forward." },
+  { icon: Users, t: "Community", d: "A batch of sixteen builders who push each other forward." },
   { icon: MapIcon, t: "Future Learning Roadmap", d: "A clear plan for exactly what to learn after Demo Day." },
 ];
 
