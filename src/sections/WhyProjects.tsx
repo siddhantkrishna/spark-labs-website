@@ -61,14 +61,15 @@ export function Why() {
             <figure className="relative">
               <div className="overflow-hidden rounded-2xl border border-line shadow-card">
                 <video
-                  src="/landing-page-final.mp4"
+                 src="/why-loop.mp4"
                   autoPlay
                   loop
                   muted
                   playsInline
                   preload="metadata"
                   aria-label="Students collaborating on laptops with a mentor guiding them"
-                  className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+                  className="aspect-[16/10] h-full w-full bg-ink object-cover transition-transform duration-700 hover:scale-[1.03]"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
               <figcaption className="mt-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] text-faint uppercase">
