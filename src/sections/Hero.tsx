@@ -12,8 +12,8 @@ const MARQUEE = [
   "Website Creation",
   "Design",
   "Presentations",
-  "Productivity",
   "Portfolio",
+  "Productivity",
   "Entrepreneurship",
 ];
 
@@ -48,7 +48,7 @@ export function Hero() {
 
           <Reveal delay={320}>
             <p className="mt-7 max-w-xl text-[17px] leading-relaxed text-mute sm:text-lg">
-              Spark Labs is a six-week, project-based AI laboratory for students aged 13&ndash;18.
+              Spark Labs is a six-week, project-based AI laboratory for students aged 12&ndash;25.
               No lecture halls. No theory dumps. You walk in a complete beginner and walk out with a
               portfolio of real AI projects you built yourself.
             </p>
