@@ -60,11 +60,15 @@ export function Why() {
           <Reveal delay={150}>
             <figure className="relative">
               <div className="overflow-hidden rounded-2xl border border-line shadow-card">
-                <img
-                  src="https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785167608385-a4b8ce49-6584-47e8-9726-a21ec77798ca.png"
-                  alt="Students collaborating on laptops with a mentor guiding them"
+                <video
+                  src="/landing-page-final.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Students collaborating on laptops with a mentor guiding them"
                   className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
-                  loading="lazy"
                 />
               </div>
               <figcaption className="mt-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] text-faint uppercase">
