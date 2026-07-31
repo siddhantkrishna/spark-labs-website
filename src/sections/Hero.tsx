@@ -39,15 +39,10 @@ export function Hero() {
 
           <h1 className="mt-7 font-display text-[clamp(2.6rem,6.2vw,4.6rem)] leading-[1.02] font-bold tracking-[-0.03em] text-ink">
             <span className={`linemask ${inView ? "is-in" : ""}`}>
-              <span>Build AI.</span>
+              <span>Learn by</span>
             </span>
             <span className={`linemask ${inView ? "is-in" : ""}`} style={{ ["--rd" as string]: "120ms" }}>
-              <span>
-                Don&rsquo;t just <span className="text-accent">learn</span>
-              </span>
-            </span>
-            <span className={`linemask ${inView ? "is-in" : ""}`} style={{ ["--rd" as string]: "240ms" }}>
-              <span>about it.</span>
+              <span className="text-accent">Building.</span>
             </span>
           </h1>
 
