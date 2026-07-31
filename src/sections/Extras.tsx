@@ -225,9 +225,9 @@ const GALLERY: GalleryItem[] = [
     span: "lg:col-span-2 lg:row-span-2",
   },
   { type: "image", src: "https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785513133068-666462b0-c723-42bf-96ae-14e7268ff871.png", alt: "Students studying together with laptops and notebooks", span: "" },
-  { type: "image", src: "https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785513132527-cf535428-3b18-4473-a247-ad0d1f72e170.png", alt: "A mentor teaching at a whiteboard", span: "" },
+  { type: "video", src: "/lab-loop2.mp4", alt: "A mentor teaching at a whiteboard", span: "" },
   { type: "image", src: "PASTE_YOUR_URL_HERE_4", alt: "Focused students working at desks in class", span: "" },
-  { type: "image", src: "PASTE_YOUR_URL_HERE_5", alt: "Mentor working through a problem one-on-one", span: "" },
+  { type: "image", src: "https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785513132527-cf535428-3b18-4473-a247-ad0d1f72e170.png", alt: "Mentor working through a problem one-on-one", span: "" },
 ];
 
 export function LearningEnvironment() {
