@@ -220,7 +220,7 @@ type GalleryItem = {
 const GALLERY: GalleryItem[] = [
   {
     type: "video",
-    src: "/lab-loop.mp4",
+    src: "/lab-loop.mp4.mp4",
     alt: "Students collaborating on laptops with a mentor",
     span: "lg:col-span-2 lg:row-span-2",
   },
