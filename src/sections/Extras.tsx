@@ -211,11 +211,11 @@ export function Mentors() {
 /* ------------------------------------------------------------------ */
 
 const GALLERY = [
-  { src: "https://images.pexels.com/photos/5212695/pexels-photo-5212695.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200", alt: "Students collaborating on laptops with a mentor", span: "lg:col-span-2 lg:row-span-2" },
-  { src: "https://images.pexels.com/photos/8456140/pexels-photo-8456140.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200", alt: "Students studying together with laptops and notebooks", span: "" },
-  { src: "https://images.pexels.com/photos/37673294/pexels-photo-37673294.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200", alt: "A mentor teaching at a whiteboard", span: "" },
-  { src: "https://images.pexels.com/photos/8423092/pexels-photo-8423092.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200", alt: "Focused students working at desks in class", span: "" },
-  { src: "https://images.pexels.com/photos/6502818/pexels-photo-6502818.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200", alt: "Mentor working through a problem one-on-one", span: "" },
+  { src: "PASTE_YOUR_URL_HERE_1", alt: "Students collaborating on laptops with a mentor", span: "lg:col-span-2 lg:row-span-2" },
+  { src: "PASTE_YOUR_URL_HERE_2", alt: "Students studying together with laptops and notebooks", span: "" },
+  { src: "PASTE_YOUR_URL_HERE_3", alt: "A mentor teaching at a whiteboard", span: "" },
+  { src: "PASTE_YOUR_URL_HERE_4", alt: "Focused students working at desks in class", span: "" },
+  { src: "PASTE_YOUR_URL_HERE_5", alt: "Mentor working through a problem one-on-one", span: "" },
 ];
 
 export function LearningEnvironment() {
