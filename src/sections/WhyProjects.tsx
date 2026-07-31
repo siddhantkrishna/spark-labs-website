@@ -61,7 +61,7 @@ export function Why() {
             <figure className="relative">
               <div className="overflow-hidden rounded-2xl border border-line shadow-card">
                 <video
-                 src="/why-loop.mp4"
+                 src="/landing-page-final.mp4"
                   autoPlay
                   loop
                   muted
