@@ -210,12 +210,24 @@ export function Mentors() {
 /* Learning environment / gallery                                      */
 /* ------------------------------------------------------------------ */
 
-const GALLERY = [
-  { src: "PASTE_YOUR_URL_HERE_1", alt: "Students collaborating on laptops with a mentor", span: "lg:col-span-2 lg:row-span-2" },
-  { src: "PASTE_YOUR_URL_HERE_2", alt: "Students studying together with laptops and notebooks", span: "" },
-  { src: "PASTE_YOUR_URL_HERE_3", alt: "A mentor teaching at a whiteboard", span: "" },
-  { src: "PASTE_YOUR_URL_HERE_4", alt: "Focused students working at desks in class", span: "" },
-  { src: "PASTE_YOUR_URL_HERE_5", alt: "Mentor working through a problem one-on-one", span: "" },
+type GalleryItem = {
+  type: "image" | "video";
+  src: string;
+  alt: string;
+  span: string;
+};
+
+const GALLERY: GalleryItem[] = [
+  {
+    type: "video",
+    src: "/lab-loop.mp4",
+    alt: "Students collaborating on laptops with a mentor",
+    span: "lg:col-span-2 lg:row-span-2",
+  },
+  { type: "image", src: "https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785513133068-666462b0-c723-42bf-96ae-14e7268ff871.png", alt: "Students studying together with laptops and notebooks", span: "" },
+  { type: "image", src: "https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785513132527-cf535428-3b18-4473-a247-ad0d1f72e170.png", alt: "A mentor teaching at a whiteboard", span: "" },
+  { type: "image", src: "PASTE_YOUR_URL_HERE_4", alt: "Focused students working at desks in class", span: "" },
+  { type: "image", src: "PASTE_YOUR_URL_HERE_5", alt: "Mentor working through a problem one-on-one", span: "" },
 ];
 
 export function LearningEnvironment() {
@@ -231,12 +243,25 @@ export function LearningEnvironment() {
         <div className="mt-14 grid auto-rows-[180px] grid-cols-2 gap-4 sm:auto-rows-[220px] lg:grid-cols-4">
           {GALLERY.map((g, i) => (
             <Reveal key={g.src} delay={(i % 4) * 70} className={`${g.span} overflow-hidden rounded-2xl`}>
-              <img
-                src={g.src}
-                alt={g.alt}
-                loading="lazy"
-                className="h-full w-full rounded-2xl border border-line object-cover transition-transform duration-700 hover:scale-105"
-              />
+              {g.type === "video" ? (
+                <video
+                  src={g.src}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label={g.alt}
+                  className="h-full w-full rounded-2xl border border-line object-cover transition-transform duration-700 hover:scale-105"
+                />
+              ) : (
+                <img
+                  src={g.src}
+                  alt={g.alt}
+                  loading="lazy"
+                  className="h-full w-full rounded-2xl border border-line object-cover transition-transform duration-700 hover:scale-105"
+                />
+              )}
             </Reveal>
           ))}
         </div>
