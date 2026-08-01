@@ -75,14 +75,17 @@ export function Journey() {
             copy="The journey is deliberately sequenced. Each week stacks on the last — from understanding AI, to commanding it, to building with it, to launching something of your own."
           />
           <Reveal delay={200} className="mt-10">
-            <div className="overflow-hidden rounded-2xl border border-line shadow-card">
-              <img
-                src="https://wghldtfppulcwhqjacnl.supabase.co/storage/v1/object/public/media/1785167616383-a6e728b5-5874-44d2-9e37-71342c6c3277.png"
-                alt="Mentor working through a problem with a student at a whiteboard"
-                className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
-                loading="lazy"
-              />
-            </div>
+           <div className="overflow-hidden rounded-2xl border border-line shadow-card">
+  <video
+    src="/journey-video.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+    preload="auto"
+    className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+  />
+</div>
             <p className="mt-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] text-faint uppercase">
               <span className="h-px w-6 bg-line-2" /> Mentorship, not lecturing
             </p>
