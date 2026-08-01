@@ -4,14 +4,14 @@ import { ApplyButton, CountUp, Reveal, SparkMark, useInView } from "@/components
 
 const MARQUEE = [
   "Prompt Engineering",
-  "AI Research",
-  "AI Writing",
+  "ChatGPT",
+  "Claude Code",
   "AI Images",
   "AI Video",
   "Automation",
   "Website Creation",
-  "Design",
-  "Presentations",
+  "Gemini",
+  "Workflows",
   "Portfolio",
   "Productivity",
   "Entrepreneurship",
