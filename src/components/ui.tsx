@@ -113,7 +113,6 @@ export function Logo({ dark = false }: { dark?: boolean }) {
     </Link>
   );
 }
-}
 
 /* ------------------------------------------------------------------ */
 /* Section header                                                      */
