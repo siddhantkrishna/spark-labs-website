@@ -104,32 +104,15 @@ export function SparkMark({ className = "h-6 w-6" }: { className?: string }) {
 
 export function Logo({ dark = false }: { dark?: boolean }) {
   return (
-    <Link to="/" className="group flex items-center gap-2.5" aria-label="Spark Labs — home">
-      <span
-        className={`grid h-9 w-9 place-items-center rounded-lg transition-transform duration-300 group-hover:rotate-90 ${
-          dark ? "bg-white text-night" : "bg-ink text-white"
-        }`}
-      >
-        <SparkMark className="h-4 w-4 text-accent-bright" />
-      </span>
-      <span className="leading-none">
-        <span
-          className={`block font-display text-[17px] font-bold tracking-[0.14em] ${
-            dark ? "text-white" : "text-ink"
-          }`}
-        >
-          SPARK
-        </span>
-        <span
-          className={`mt-0.5 block font-mono text-[9px] font-medium tracking-[0.42em] ${
-            dark ? "text-white/50" : "text-mute"
-          }`}
-        >
-          LABS
-        </span>
-      </span>
+    <Link to="/" className="group flex items-center" aria-label="Spark Labs — home">
+      <img
+        src="/spark-icon.png"
+        alt="Spark Labs"
+        className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+      />
     </Link>
   );
+}
 }
 
 /* ------------------------------------------------------------------ */
