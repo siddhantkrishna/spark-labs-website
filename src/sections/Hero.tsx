@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, CalendarCheck, MapPin, Users, Terminal } from "lucide-react";
 import { ApplyButton, CountUp, Reveal, SparkMark, useInView } from "@/components/ui";
@@ -17,8 +18,80 @@ const MARQUEE = [
   "Entrepreneurship",
 ];
 
+/** Typewriter that types line 1, then line 2, with a blinking caret. */
+function Typewriter({
+  lines,
+  start,
+  speed = 75,
+  linePause = 350,
+  onDone,
+}: {
+  lines: { text: string; className?: string }[];
+  start: boolean;
+  speed?: number;
+  linePause?: number;
+  onDone?: () => void;
+}) {
+  const [lineIndex, setLineIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!start || done) return;
+    const currentLine = lines[lineIndex];
+    if (!currentLine) return;
+
+    if (charIndex < currentLine.text.length) {
+      const t = setTimeout(() => setCharIndex((c) => c + 1), speed);
+      return () => clearTimeout(t);
+    }
+
+    if (lineIndex < lines.length - 1) {
+      const t = setTimeout(() => {
+        setLineIndex((i) => i + 1);
+        setCharIndex(0);
+      }, linePause);
+      return () => clearTimeout(t);
+    }
+
+    setDone(true);
+    onDone?.();
+  }, [start, charIndex, lineIndex, lines, speed, linePause, done, onDone]);
+
+  return (
+    <>
+      {lines.map((line, i) => {
+        const isCurrent = i === lineIndex && !done;
+        const isPast = i < lineIndex || done;
+        const shown = isPast ? line.text : isCurrent ? line.text.slice(0, charIndex) : "";
+        const showCaret = isCurrent || (done && i === lines.length - 1);
+        return (
+          <span key={i} className="block">
+            <span className={line.className}>{shown}</span>
+            {showCaret && (
+              <span
+                className="caret ml-1 inline-block h-[0.85em] w-[3px] translate-y-1 bg-accent align-baseline"
+                aria-hidden="true"
+              />
+            )}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 export function Hero() {
   const { ref, inView } = useInView<HTMLDivElement>(0.1);
+  const [startTyping, setStartTyping] = useState(false);
+
+  useEffect(() => {
+    if (inView) {
+      const t = setTimeout(() => setStartTyping(true), 250);
+      return () => clearTimeout(t);
+    }
+  }, [inView]);
+
   return (
     <section id="top" className="relative overflow-hidden pt-[72px]">
       <div className="dotgrid dotgrid-fade pointer-events-none absolute inset-0" aria-hidden="true" />
@@ -37,13 +110,19 @@ export function Hero() {
             </div>
           </Reveal>
 
-          <h1 className="mt-7 font-display text-[clamp(2.6rem,6.2vw,4.6rem)] leading-[1.02] font-bold tracking-[-0.03em] text-ink">
-            <span className={`linemask ${inView ? "is-in" : ""}`}>
-              <span>Learn by</span>
-            </span>
-            <span className={`linemask ${inView ? "is-in" : ""}`} style={{ ["--rd" as string]: "120ms" }}>
-              <span className="text-accent">Building.</span>
-            </span>
+          <h1
+            className="mt-7 font-display text-[clamp(2.6rem,6.2vw,4.6rem)] leading-[1.02] font-bold tracking-[-0.03em] text-ink min-h-[2.2em]"
+            aria-label="Learn by Building."
+          >
+            <Typewriter
+              start={startTyping}
+              speed={70}
+              linePause={300}
+              lines={[
+                { text: "Learn by" },
+                { text: "Building.", className: "text-accent" },
+              ]}
+            />
           </h1>
 
           <Reveal delay={320}>
