@@ -68,136 +68,140 @@ const LovableIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
 
 /* --------------------------- ORBIT CONFIGURATION --------------------------- */
 
-// 1 = inner, 2 = middle, 3 = outer
+// Ring 1 = Inner, 2 = Middle, 3 = Outer
 const TOOLS = [
-  { name: "Figma", Icon: FigmaIcon, href: "https://figma.com", ring: 1, angle: 0 },
-  { name: "Cursor", Icon: CursorIcon, href: "https://cursor.com", ring: 1, angle: 72 },
-  { name: "Notion", Icon: NotionIcon, href: "https://notion.so", ring: 1, angle: 144 },
-  { name: "Runway", Icon: RunwayIcon, href: "https://runwayml.com", ring: 1, angle: 216 },
-  { name: "Copilot", Icon: CopilotIcon, href: "https://copilot.microsoft.com", ring: 1, angle: 288 },
+  { name: "Figma", Icon: FigmaIcon, href: "https://figma.com", ring: 1, angle: 60 },
+  { name: "Runway", Icon: RunwayIcon, href: "https://runwayml.com", ring: 1, angle: 135 },
+  { name: "Notion", Icon: NotionIcon, href: "https://notion.so", ring: 1, angle: 210 },
+  { name: "Cursor", Icon: CursorIcon, href: "https://cursor.com", ring: 1, angle: 330 },
 
-  { name: "ChatGPT", Icon: ChatGPTIcon, href: "https://chatgpt.com", ring: 2, angle: 30 },
-  { name: "Hugging Face", Icon: HuggingFaceIcon, href: "https://huggingface.co", ring: 2, angle: 120 },
-  { name: "lovable", Icon: LovableIcon, href: "https://lovable.dev", ring: 2, angle: 210 },
-  { name: "Perplexity", Icon: PerplexityIcon, href: "https://perplexity.ai", ring: 2, angle: 300 },
+  { name: "Copilot", Icon: CopilotIcon, href: "https://copilot.microsoft.com", ring: 2, angle: 20 },
+  { name: "Hugging Face", Icon: HuggingFaceIcon, href: "https://huggingface.co", ring: 2, angle: 90 },
+  { name: "ChatGPT", Icon: ChatGPTIcon, href: "https://chatgpt.com", ring: 2, angle: 180 },
+  { name: "lovable", Icon: LovableIcon, href: "https://lovable.dev", ring: 2, angle: 260 },
 
-  { name: "OpenAI", Icon: OpenAIIcon, href: "https://openai.com", ring: 3, angle: 60 },
-  { name: "Gemini", Icon: GeminiIcon, href: "https://gemini.google.com", ring: 3, angle: 150 },
-  { name: "Midjourney", Icon: MidjourneyIcon, href: "https://midjourney.com", ring: 3, angle: 240 },
-  { name: "Claude", Icon: ClaudeIcon, href: "https://claude.ai", ring: 3, angle: 330 },
+  { name: "Perplexity", Icon: PerplexityIcon, href: "https://perplexity.ai", ring: 3, angle: 45 },
+  { name: "Midjourney", Icon: MidjourneyIcon, href: "https://midjourney.com", ring: 3, angle: 105 },
+  { name: "Gemini", Icon: GeminiIcon, href: "https://gemini.google.com", ring: 3, angle: 155 },
+  { name: "OpenAI", Icon: OpenAIIcon, href: "https://openai.com", ring: 3, angle: 270 },
+  { name: "Claude", Icon: ClaudeIcon, href: "https://claude.ai", ring: 3, angle: 315 },
 ];
 
 const RING_RADII = { 1: 140, 2: 240, 3: 350 };
-const RING_DURATIONS = { 1: 35, 2: 50, 3: 70 }; // Seconds for one full orbit
+const RING_DURATIONS = { 1: 40, 2: 60, 3: 80 }; // Rotation speed in seconds
 
 export function Hero() {
   const { ref, inView } = useInView<HTMLDivElement>(0.1);
 
   return (
-    <section id="top" className="relative w-full overflow-hidden bg-[#05030b] text-white pt-24 min-h-screen flex flex-col justify-between">
+    <section id="top" className="relative w-full min-h-screen overflow-hidden bg-[#05010d] text-white pt-[90px] flex flex-col justify-between">
       
       {/* ----------------- DENSE STARFIELD ----------------- */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="stars-layer stars-small" />
         <div className="stars-layer stars-medium" />
         <div className="stars-layer stars-large" />
       </div>
 
+      {/* Galaxy Nebula Glow Behind the Orbit */}
+      <div className="absolute top-[40%] right-[10%] -translate-y-1/2 w-[800px] h-[800px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none z-0" />
+
       {/* ----------------- MAIN CONTENT GRID ----------------- */}
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 flex-1">
         
         {/* LEFT: Text Content */}
-        <div ref={ref} className="flex flex-col justify-center max-w-xl xl:max-w-2xl pt-10 lg:pt-0">
+        <div ref={ref} className="flex flex-col justify-center max-w-[550px] pt-12 pb-24 lg:pt-0 lg:pb-32">
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-mono tracking-[0.2em] text-white/80 uppercase backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_#a855f7]" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-900/10 px-4 py-1.5 text-[10px] font-mono tracking-[0.2em] text-white/70 uppercase backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_#a855f7]" />
               Admissions Open · Batch 01
             </div>
           </Reveal>
 
-          <h1 className="mt-8 font-display text-[clamp(3rem,7vw,5.5rem)] font-black leading-[0.9] tracking-tight uppercase">
-            <span className={`block transition-all duration-1000 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+          <h1 className="mt-8 font-display text-[clamp(2.8rem,5.5vw,5rem)] font-bold leading-[1.05] tracking-tight uppercase">
+            <span className={`block text-white transition-all duration-1000 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
               Build the Future.
             </span>
             <span 
-              className={`block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-200 transition-all duration-1000 delay-150 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
-              style={{ textShadow: "0 0 60px rgba(168, 85, 247, 0.4)" }}
+              className={`block text-[#9b66ff] transition-all duration-1000 delay-150 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+              style={{ textShadow: "0 0 50px rgba(155, 102, 255, 0.4)" }}
             >
               Start Now.
             </span>
           </h1>
 
           <Reveal delay={280} className="mt-8 flex items-center gap-3">
-            <div className="h-2 w-2 rotate-45 bg-purple-500 shadow-[0_0_10px_#a855f7]" />
-            <div className="h-px w-32 bg-gradient-to-r from-purple-500 to-transparent opacity-60" />
+            <div className="h-2 w-2 rotate-45 bg-[#9b66ff] shadow-[0_0_12px_#9b66ff]" />
+            <div className="h-px w-64 bg-gradient-to-r from-[#9b66ff] to-transparent opacity-40" />
           </Reveal>
 
           <Reveal delay={340}>
-            <p className="mt-8 max-w-lg text-[17px] text-white/60 leading-relaxed font-light">
-              Spark Labs is a 6-week AI innovation program for students aged 12–25. No lectures.
-              No theory dumps. Just you, the right tools, and real-world projects that make an impact.
+            <p className="mt-8 text-[15px] sm:text-[16px] text-white/60 leading-relaxed font-light">
+              Spark Labs is a 6-week AI innovation program for students aged 12–25. No lectures. No theory dumps. Just you, the right tools, and real-world projects that make an impact.
             </p>
           </Reveal>
 
           <Reveal delay={440} className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Link
               to="/admissions"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-purple-600 px-8 py-4 text-[15px] font-semibold text-white shadow-[0_0_30px_rgba(147,51,234,0.4)] transition-all duration-300 hover:bg-purple-500 hover:shadow-[0_0_40px_rgba(147,51,234,0.6)] hover:-translate-y-0.5"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] px-7 py-3.5 text-[14px] font-medium text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all duration-300 hover:shadow-[0_0_45px_rgba(124,58,237,0.6)] hover:-translate-y-0.5 border border-purple-400/20"
             >
               Apply for Admission
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
-            <ApplyButton mode="counsel" variant="ghost" className="rounded-full border border-white/10 bg-white/5 px-8 py-4 text-[15px] text-white transition-all hover:bg-white/10 hover:border-white/20">
-              <CalendarCheck className="h-4 w-4 text-purple-400" />
+            <ApplyButton mode="counsel" variant="ghost" className="rounded-full border border-white/10 bg-[#0a0514]/50 px-7 py-3.5 text-[14px] text-white/80 transition-all hover:bg-white/5 hover:text-white backdrop-blur-md">
+              <CalendarCheck className="h-4 w-4 text-white/60 mr-1" />
               Book a Free Counseling Session
             </ApplyButton>
           </Reveal>
         </div>
 
-        {/* RIGHT: Dynamic Orbit System */}
-        <div className="relative flex items-center justify-center min-h-[500px] lg:min-h-full scale-[0.65] sm:scale-75 md:scale-90 lg:scale-100 origin-center lg:origin-right xl:origin-center mt-10 lg:mt-0 z-10">
+        {/* RIGHT: Perfect Mathematical Orbit System */}
+        <div className="relative hidden lg:flex items-center justify-center -mr-20 xl:mr-0 h-full z-10">
           
-          <div className="relative w-[10px] h-[10px]">
-            {/* Background Orbit Guide Rings */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" style={{ width: RING_RADII[1]*2, height: RING_RADII[1]*2 }} />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" style={{ width: RING_RADII[2]*2, height: RING_RADII[2]*2 }} />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" style={{ width: RING_RADII[3]*2, height: RING_RADII[3]*2 }} />
+          <div className="relative w-[2px] h-[2px]">
+            {/* Dashed/Faint Guide Rings */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]" style={{ width: RING_RADII[1]*2, height: RING_RADII[1]*2 }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]" style={{ width: RING_RADII[2]*2, height: RING_RADII[2]*2 }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]" style={{ width: RING_RADII[3]*2, height: RING_RADII[3]*2 }} />
 
             {/* Core Spark Logo */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-              <div className="relative grid h-28 w-28 place-items-center rounded-full border border-purple-500/20 bg-[#080415] shadow-[0_0_80px_rgba(168,85,247,0.3)] backdrop-blur-md">
-                <SparkMark className="h-12 w-12 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
-                {/* Core pulse glow */}
-                <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-purple-500 duration-[3000ms]" />
+              <div className="relative flex items-center justify-center h-24 w-24 rounded-full bg-[#05010d] border border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.08)] backdrop-blur-xl">
+                <SparkMark className="h-10 w-10 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]" />
               </div>
             </div>
 
-            {/* Orbiting Tools */}
+            {/* Orbiting Tools Built with Nested Transform Rotation */}
             {TOOLS.map((tool) => {
               const radius = RING_RADII[tool.ring as keyof typeof RING_RADII];
               const duration = RING_DURATIONS[tool.ring as keyof typeof RING_DURATIONS];
-              const delay = -1 * (tool.angle / 360) * duration; // Calculate exact delay to space them out
 
               return (
-                <div key={tool.name} className="absolute top-1/2 left-1/2 z-30" style={{ width: 0, height: 0 }}>
+                <div 
+                  key={tool.name} 
+                  className="absolute top-1/2 left-1/2 z-30" 
+                  style={{ transform: `rotate(${tool.angle}deg)` }}
+                >
                   <div 
-                    className="absolute top-0 left-0 flex items-center justify-center animate-spin-orbit"
-                    style={{ animationDuration: `${duration}s`, animationDelay: `${delay}s` }}
+                    className="origin-top-left"
+                    style={{ animation: `spin-cw ${duration}s linear infinite` }}
                   >
-                    <div style={{ transform: `translateY(-${radius}px)` }}>
-                      <div 
-                        className="flex items-center justify-center animate-counter-spin"
-                        style={{ animationDuration: `${duration}s`, animationDelay: `${delay}s` }}
-                      >
-                        <a
-                          href={tool.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group flex items-center gap-2.5 rounded-full border border-white/10 bg-[#0c081c]/90 px-3.5 py-2 text-xs font-medium text-white/90 backdrop-blur-xl transition-all duration-300 hover:scale-110 hover:border-purple-500/60 hover:bg-[#130d26] hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] whitespace-nowrap"
-                        >
-                          <tool.Icon />
-                          <span>{tool.name}</span>
-                        </a>
+                    <div style={{ transform: `translateX(${radius}px)` }}>
+                      <div style={{ animation: `spin-ccw ${duration}s linear infinite` }}>
+                        <div style={{ transform: `rotate(-${tool.angle}deg)` }}>
+                          
+                          <a
+                            href={tool.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="pointer-events-auto group absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 rounded-[14px] border border-white/5 bg-[#0a0514]/80 px-4 py-2.5 text-xs font-medium text-white/90 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-purple-500/50 hover:bg-[#130826] hover:shadow-[0_0_20px_rgba(155,102,255,0.3)] whitespace-nowrap"
+                          >
+                            <tool.Icon />
+                            <span>{tool.name}</span>
+                          </a>
+
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -209,34 +213,36 @@ export function Hero() {
       </div>
 
       {/* ----------------- BOTTOM PLANET & STATS ----------------- */}
-      <div className="relative mt-20 pt-32 lg:pt-40 w-full overflow-hidden flex flex-col items-center justify-end z-20">
+      <div className="relative h-[300px] sm:h-[350px] w-full flex flex-col items-center justify-end z-20 overflow-hidden">
         
-        {/* Moving Planet Background Element */}
-        <div className="absolute bottom-[-150px] sm:bottom-[-200px] left-1/2 -translate-x-1/2 w-[150vw] min-w-[1200px] h-[400px] sm:h-[600px]">
-          {/* Planet Body with gentle rotating movement */}
-          <div className="w-full h-full rounded-[50%_50%_0_0] border-t border-purple-500/40 bg-gradient-to-b from-[#13072e] via-[#05030b] to-[#05030b] shadow-[inset_0_50px_100px_rgba(147,51,234,0.15)] animate-planet-breathe" />
-          
-          {/* Intense Lens Flare on Horizon */}
-          <div className="absolute top-[-50px] left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.6)_0%,rgba(168,85,247,0.15)_40%,transparent_70%)] blur-[40px] pointer-events-none" />
-          <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-[300px] h-[50px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.8)_0%,rgba(216,180,254,0.4)_40%,transparent_70%)] blur-[10px] pointer-events-none" />
+        {/* Massive Moving Planet Surface */}
+        <div className="absolute bottom-[-150px] w-[200vw] min-w-[1500px] h-[500px] left-1/2 -translate-x-1/2 animate-planet-rotate z-0">
+          <div className="w-full h-full rounded-[100%] bg-gradient-to-b from-[#09041a] via-[#05010d] to-[#020005] border-t-[1.5px] border-[#9b66ff]/50 shadow-[inset_0_40px_100px_rgba(155,102,255,0.15)]" />
         </div>
+        
+        {/* Intense Central Lens Flare at Planet Horizon */}
+        <div className="absolute top-[20px] sm:top-[60px] left-1/2 -translate-x-1/2 w-[80vw] max-w-[1000px] h-[150px] bg-[radial-gradient(ellipse_at_center,rgba(155,102,255,0.4)_0%,rgba(124,58,237,0.1)_40%,transparent_70%)] blur-[30px] z-0 pointer-events-none" />
+        <div className="absolute top-[35px] sm:top-[75px] left-1/2 -translate-x-1/2 w-[300px] h-[30px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,rgba(155,102,255,0.6)_40%,transparent_70%)] blur-[8px] z-0 pointer-events-none" />
 
-        {/* Stats Pill - Sitting exactly on the planet curve */}
-        <Reveal delay={500} className="relative z-30 w-full max-w-5xl px-6 mb-8">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 rounded-3xl border border-white/10 bg-[#0c081c]/70 p-4 sm:p-6 shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
+        {/* Embedded Stats Pill */}
+        <Reveal delay={500} className="relative z-30 w-full max-w-4xl px-6 mb-8 transform -translate-y-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between rounded-3xl border border-white/5 bg-[#0a0514]/40 px-8 py-5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl gap-6 sm:gap-4">
             <StatPill Icon={Users} value="32+" label="Students per batch" />
+            <div className="hidden sm:block w-px h-12 bg-white/5" />
             <StatPill Icon={FlaskConical} value="16+" label="Hands-on projects" />
+            <div className="hidden sm:block w-px h-12 bg-white/5" />
             <StatPill Icon={Clock} value="21 Days" label="Intensive journey" />
+            <div className="hidden sm:block w-px h-12 bg-white/5" />
             <StatPill Icon={Rocket} value="Real World" label="Impact driven" />
           </div>
         </Reveal>
 
         {/* Bottom Tagline */}
-        <Reveal delay={600} className="relative z-30 pb-12 text-center">
-          <p className="font-mono text-[11px] sm:text-xs font-bold tracking-[0.3em] text-purple-400 uppercase drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+        <Reveal delay={600} className="relative z-30 pb-10 text-center">
+          <p className="font-mono text-[10px] sm:text-[11px] font-bold tracking-[0.3em] text-[#6e46c7] uppercase">
             Learn. Build. Ship. Impact.
           </p>
-          <p className="mt-2 text-xs text-white/40 font-light">
+          <p className="mt-2 text-[10px] text-white/30 font-light tracking-wide">
             Supported by the world's most powerful AI tools.
           </p>
         </Reveal>
@@ -244,33 +250,24 @@ export function Hero() {
 
       {/* ----------------- STYLES ----------------- */}
       <style>{`
-        /* Mathematical Orbit Animations */
-        @keyframes spin-orbit {
+        /* True Orbital Math Animations */
+        @keyframes spin-cw {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-        @keyframes counter-spin {
+        @keyframes spin-ccw {
           from { transform: rotate(0deg); }
           to { transform: rotate(-360deg); }
         }
-        .animate-spin-orbit {
-          animation-name: spin-orbit;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-        }
-        .animate-counter-spin {
-          animation-name: counter-spin;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-        }
 
-        /* Planet Movement */
-        @keyframes planet-breathe {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-10px) scale(1.02); }
+        /* Subtle Planet Rotation */
+        @keyframes planet-rotate {
+          from { transform: translateX(-50%) rotate(0deg); }
+          to { transform: translateX(-50%) rotate(360deg); }
         }
-        .animate-planet-breathe {
-          animation: planet-breathe 10s ease-in-out infinite;
+        .animate-planet-rotate {
+          transform-origin: center 1500px; /* Spin around a distant center point below */
+          animation: planet-rotate 240s linear infinite;
         }
 
         /* Twinkling Starfield Generator */
@@ -280,7 +277,6 @@ export function Hero() {
           width: 100%; height: 100%;
         }
         
-        /* Using multiple box-shadows to generate random-looking stars */
         .stars-small {
           background: transparent;
           box-shadow: 
@@ -293,37 +289,42 @@ export function Hero() {
             60vw 85vh 1px 0px rgba(255,255,255,0.9),
             10vw 40vh 1px 0px rgba(255,255,255,0.6),
             75vw 35vh 1px 0px rgba(255,255,255,0.7),
-            30vw 60vh 1px 0px rgba(255,255,255,0.8);
+            30vw 60vh 1px 0px rgba(255,255,255,0.8),
+            5vw 90vh 1px 0px rgba(255,255,255,0.9),
+            95vw 30vh 1px 0px rgba(255,255,255,0.6);
           animation: twinkle-1 4s ease-in-out infinite alternate;
         }
 
         .stars-medium {
           background: transparent;
           box-shadow: 
-            25vw 30vh 2px 0px rgba(255,255,255,0.7),
+            25vw 30vh 1.5px 0px rgba(255,255,255,0.7),
             65vw 20vh 1.5px 0px rgba(216,180,254,0.8),
-            85vw 60vh 2px 0px rgba(255,255,255,0.6),
+            85vw 60vh 1.5px 0px rgba(255,255,255,0.6),
             15vw 70vh 1.5px 0px rgba(255,255,255,0.9),
-            45vw 85vh 2px 0px rgba(216,180,254,0.7),
+            45vw 85vh 1.5px 0px rgba(216,180,254,0.7),
             5vw 10vh 1.5px 0px rgba(255,255,255,0.8),
-            95vw 90vh 2px 0px rgba(255,255,255,0.7),
-            55vw 45vh 1.5px 0px rgba(216,180,254,0.9);
+            95vw 90vh 1.5px 0px rgba(255,255,255,0.7),
+            55vw 45vh 1.5px 0px rgba(216,180,254,0.9),
+            35vw 95vh 1.5px 0px rgba(255,255,255,0.8),
+            75vw 75vh 1.5px 0px rgba(216,180,254,0.7);
           animation: twinkle-2 6s ease-in-out infinite alternate-reverse;
         }
 
         .stars-large {
           background: transparent;
           box-shadow: 
-            35vw 40vh 2.5px 0px rgba(255,255,255,0.9),
-            70vw 5vh 3px 0px rgba(216,180,254,0.8),
-            20vw 90vh 2.5px 0px rgba(255,255,255,0.7),
-            80vw 80vh 3px 0px rgba(255,255,255,0.9);
-          animation: twinkle-3 8s ease-in-out infinite alternate;
+            35vw 40vh 2px 0px rgba(255,255,255,1),
+            70vw 15vh 2.5px 0px rgba(216,180,254,0.9),
+            20vw 90vh 2px 0px rgba(255,255,255,0.8),
+            80vw 80vh 2.5px 0px rgba(255,255,255,1),
+            88vw 30vh 2px 0px rgba(216,180,254,0.8);
+          animation: twinkle-3 5s ease-in-out infinite alternate;
         }
 
         @keyframes twinkle-1 { 0% { opacity: 0.2; } 100% { opacity: 1; } }
-        @keyframes twinkle-2 { 0% { opacity: 0.1; } 100% { opacity: 0.8; } }
-        @keyframes twinkle-3 { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.2); } }
+        @keyframes twinkle-2 { 0% { opacity: 0.1; } 100% { opacity: 0.9; } }
+        @keyframes twinkle-3 { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
       `}</style>
     </section>
   );
@@ -331,13 +332,13 @@ export function Hero() {
 
 function StatPill({ Icon, value, label }: { Icon: any; value: string; label: string }) {
   return (
-    <div className="flex flex-col xl:flex-row items-center xl:items-start gap-3 p-2 text-center xl:text-left">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[inset_0_0_15px_rgba(168,85,247,0.2)]">
-        <Icon className="h-4 w-4" />
+    <div className="flex items-center gap-4 text-left w-full sm:w-auto justify-center sm:justify-start">
+      <span className="flex-shrink-0 text-[#9b66ff]">
+        <Icon className="h-6 w-6 stroke-[1.5]" />
       </span>
       <div className="leading-tight">
-        <div className="font-display text-lg sm:text-xl font-bold text-white">{value}</div>
-        <div className="mt-1 font-mono text-[9px] sm:text-[10px] tracking-widest text-white/50 uppercase">{label}</div>
+        <div className="font-display text-[1.15rem] font-semibold text-white/90">{value}</div>
+        <div className="mt-0.5 font-mono text-[9px] tracking-wider text-white/40 uppercase">{label}</div>
       </div>
     </div>
   );
