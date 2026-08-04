@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import {
   Atom,
   Puzzle,
@@ -10,7 +11,28 @@ import {
   ArrowDown,
   Flag,
 } from "lucide-react";
-import { Reveal, SectionHead, useInView } from "../components/ui";
+import { Reveal, SectionHead } from "../components/ui";
+
+function useInView<T extends HTMLElement>(threshold = 0.18) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold, rootMargin: "0px 0px -8% 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
 
 /* ================================================================== */
 /* SECTION 4 — BUILDER JOURNEY                                         */
@@ -60,7 +82,6 @@ export function Journey() {
   return (
     <section id="journey" className="relative py-24 lg:py-32">
       <div className="mx-auto grid max-w-7xl gap-16 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr]">
-        {/* sticky intro */}
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHead
             index="03"
@@ -75,24 +96,23 @@ export function Journey() {
             copy="The journey is deliberately sequenced. Each week stacks on the last — from understanding AI, to commanding it, to building with it, to launching something of your own."
           />
           <Reveal delay={200} className="mt-10">
-           <div className="overflow-hidden rounded-2xl border border-line shadow-card">
-  <video
-    src="/journey-video.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-    preload="auto"
-    className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
-  />
-</div>
+            <div className="overflow-hidden rounded-2xl border border-line shadow-card">
+              <video
+                src="/journey-video.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className="aspect-[16/10] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+              />
+            </div>
             <p className="mt-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] text-faint uppercase">
               <span className="h-px w-6 bg-line-2" /> Mentorship, not lecturing
             </p>
           </Reveal>
         </div>
 
-        {/* timeline */}
         <div ref={ref} className="relative pl-10 sm:pl-14">
           <span
             className={`absolute top-2 bottom-2 left-[13px] w-px bg-line-2 sm:left-[17px] ${inView ? "growline" : "opacity-0"}`}
