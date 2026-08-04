@@ -138,7 +138,7 @@ const LovableIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
   </svg>
 );
 
-/* --------------------------- TOOL BADGE --------------------------- */
+/* --------------------------- TOOL BADGE (glowing border) --------------------------- */
 
 type Tool = {
   name: string;
@@ -196,7 +196,6 @@ export function Hero() {
       <div className="dotgrid dotgrid-fade pointer-events-none absolute inset-0 hero-dotgrid" aria-hidden="true" />
 
       <div className="relative mx-auto grid max-w-7xl gap-14 px-5 pt-16 pb-24 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-24 lg:pb-32">
-        {/* LEFT */}
         <div ref={ref}>
           <Reveal>
             <div className="flex flex-wrap items-center gap-3">
@@ -245,7 +244,6 @@ export function Hero() {
           </Reveal>
         </div>
 
-        {/* RIGHT: Cosmic tool grid */}
         <Reveal delay={200} className="relative">
           <div className="relative mx-auto aspect-square w-full max-w-[560px]">
             <div className="absolute inset-0 rounded-full border border-white/5 orbit-ring" />
@@ -266,7 +264,6 @@ export function Hero() {
         </Reveal>
       </div>
 
-      {/* STATS PILL */}
       <div className="relative z-10 mx-auto -mt-6 max-w-5xl px-5 pb-16 sm:px-8">
         <Reveal delay={520}>
           <div className="grid grid-cols-2 gap-4 rounded-2xl border border-line bg-white/70 p-5 shadow-card backdrop-blur-md sm:grid-cols-4 sm:gap-2 sm:p-6">
@@ -396,8 +393,6 @@ export function Hero() {
     </section>
   );
 }
-
-/* --------------------------- Stat Pill --------------------------- */
 
 function StatPill({
   Icon,
