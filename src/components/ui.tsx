@@ -1,6 +1,28 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, CalendarCheck, Users, FlaskConical, Clock, Rocket } from "lucide-react";
 import { ApplyButton, Reveal, SparkMark, useInView } from "@/components/ui";
+import { useEffect as _uix_useEffect, useRef as _uix_useRef, useState as _uix_useState } from "react";
+
+export function useInView<T extends HTMLElement>(threshold = 0.18) {
+  const ref = _uix_useRef<T | null>(null);
+  const [inView, setInView] = _uix_useState(false);
+  _uix_useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold, rootMargin: "0px 0px -8% 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
 
 /* --------------------------- AI TOOL ICONS (inline SVG) --------------------------- */
 
