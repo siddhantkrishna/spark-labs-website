@@ -1,351 +1,774 @@
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, CalendarCheck, Users, FlaskConical, Clock, Rocket } from "lucide-react";
-import { ApplyButton, Reveal, SparkMark } from "@/components/ui";
+// Hero.tsx
+// Spark Labs — Hero Section
+// ADAPT: Reveal / useInView / ApplyButton prop shapes if they differ in your codebase.
 
-function useInView<T extends HTMLElement>(threshold = 0.18) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          obs.disconnect();
-        }
-      },
-      { threshold, rootMargin: "0px 0px -8% 0px" }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+import { useState, type FC, type ReactNode, type SVGProps } from 'react';
+import { ApplyButton, Reveal, SparkMark } from '@/components/ui';
+import { useInView } from '@/hooks/useInView';
+
+/* =========================================================================
+   1. BRAND ICONS (inline SVG, ~18–20px, authentic-ish brand colors)
+   ========================================================================= */
+
+type IconProps = SVGProps<SVGSVGElement>;
+
+const OpenAIIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <path
+      fill="#ffffff"
+      d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .75 7.09 5.98 5.98 0 0 0 .52 4.91 6.05 6.05 0 0 0 6.51 2.9 5.98 5.98 0 0 0 4.51 2.02c2.42 0 4.55-1.55 5.32-3.84a5.98 5.98 0 0 0 4-2.9 6.05 6.05 0 0 0-.31-7.44Zm-9.02 12.61a4.48 4.48 0 0 1-2.87-1.04l.14-.08 4.78-2.76a.79.79 0 0 0 .39-.68V11a4.5 4.5 0 0 1 2.02 3.74v3.75a4.5 4.5 0 0 1-4.46 4.94ZM4.6 18.3a4.47 4.47 0 0 1-.53-3.01l.14.08 4.78 2.76a.77.77 0 0 0 .78 0l5.84-3.37v2.33a.08.08 0 0 1-.03.06L9.74 19.95a4.5 4.5 0 0 1-5.14-1.65ZM3.34 8.9A4.49 4.49 0 0 1 5.7 6.92v3.87a.77.77 0 0 0 .39.68l5.81 3.35-2.02 1.17a.08.08 0 0 1-.07 0L4.97 13.2A4.5 4.5 0 0 1 3.34 8.9Zm14.99-1.05-4.78-2.78a.79.79 0 0 0-.78 0L7.93 8.44V6.1a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.69 4.66Z"
+    />
+  </svg>
+);
+
+const ClaudeIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <g stroke="#D97757" strokeWidth="2" strokeLinecap="round">
+      <line x1="12" y1="2" x2="12" y2="8" />
+      <line x1="12" y1="16" x2="12" y2="22" />
+      <line x1="2" y1="12" x2="8" y2="12" />
+      <line x1="16" y1="12" x2="22" y2="12" />
+      <line x1="4.9" y1="4.9" x2="9" y2="9" />
+      <line x1="15" y1="15" x2="19.1" y2="19.1" />
+      <line x1="19.1" y1="4.9" x2="15" y2="9" />
+      <line x1="9" y1="15" x2="4.9" y2="19.1" />
+    </g>
+  </svg>
+);
+
+const GeminiIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <defs>
+      <linearGradient id="sl-gemini-grad" x1="0" y1="0" x2="24" y2="24">
+        <stop offset="0%" stopColor="#4285F4" />
+        <stop offset="100%" stopColor="#9B72CB" />
+      </linearGradient>
+    </defs>
+    <path
+      fill="url(#sl-gemini-grad)"
+      d="M12 2c0 5.523 4.477 10 10 10-5.523 0-10 4.477-10 10 0-5.523-4.477-10-10-10 5.523 0 10-4.477 10-10z"
+    />
+  </svg>
+);
+
+const LovableIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <defs>
+      <linearGradient id="sl-lovable-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#FF6B9D" />
+        <stop offset="100%" stopColor="#FF9F5B" />
+      </linearGradient>
+    </defs>
+    <path
+      fill="url(#sl-lovable-grad)"
+      d="M12 21s-6.72-4.35-9.43-8.49C.94 9.94 1.5 6.5 4.2 5.1c2-1.05 4.3-.4 7.8 2.9 3.5-3.3 5.8-3.95 7.8-2.9 2.7 1.4 3.26 4.84 1.63 7.42C18.72 16.65 12 21 12 21z"
+    />
+  </svg>
+);
+
+const PerplexityIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} fill="none" {...p}>
+    <path stroke="#20B8CD" strokeWidth="1.5" d="M12 2l8 4.5v9L12 20l-8-4.5v-9L12 2z" />
+    <path stroke="#20B8CD" strokeWidth="1.5" d="M12 2v18M4 6.5 12 11l8-4.5M4 15.5 12 11l8 4.5" />
+  </svg>
+);
+
+const MidjourneyIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <path
+      fill="#ffffff"
+      d="M2 15c2-4 4-6 6-6s3 2 4 4 2 4 4 4 4-2 6-6v3c-2 4-4 6-6 6s-3-2-4-4-2-4-4-4-4 2-6 6v-3z"
+    />
+  </svg>
+);
+
+const ChatGPTIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <g fill="#10A37F">
+      <circle cx="12" cy="5" r="3" />
+      <circle cx="12" cy="19" r="3" />
+      <circle cx="5" cy="12" r="3" />
+      <circle cx="19" cy="12" r="3" />
+      <circle cx="12" cy="12" r="3.5" />
+    </g>
+  </svg>
+);
+
+const HuggingFaceIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <circle cx="12" cy="12" r="10" fill="#FFD21E" />
+    <circle cx="8.5" cy="10" r="1.3" fill="#000" />
+    <circle cx="15.5" cy="10" r="1.3" fill="#000" />
+    <path d="M7 14c1.5 2 3 3 5 3s3.5-1 5-3" stroke="#000" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+  </svg>
+);
+
+const RunwayIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <circle cx="12" cy="12" r="9.5" fill="none" stroke="#00C853" strokeWidth="1.5" />
+    <text x="12" y="16" textAnchor="middle" fontSize="11" fill="#00C853" fontFamily="monospace" fontWeight="700">
+      R
+    </text>
+  </svg>
+);
+
+const CopilotIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <defs>
+      <linearGradient id="sl-copilot-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#4C6EF5" />
+        <stop offset="50%" stopColor="#9775FA" />
+        <stop offset="100%" stopColor="#FF922B" />
+      </linearGradient>
+    </defs>
+    <circle cx="12" cy="12" r="9" fill="none" stroke="url(#sl-copilot-grad)" strokeWidth="2.2" />
+    <circle cx="9" cy="12" r="1.4" fill="#fff" />
+    <circle cx="15" cy="12" r="1.4" fill="#fff" />
+  </svg>
+);
+
+const NotionIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <rect x="3" y="3" width="18" height="18" rx="3" fill="#ffffff" />
+    <text x="12" y="16.5" textAnchor="middle" fontSize="12" fontWeight="700" fill="#000" fontFamily="Georgia, serif">
+      N
+    </text>
+  </svg>
+);
+
+const FigmaIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <circle cx="9" cy="6" r="3" fill="#F24E1E" />
+    <circle cx="9" cy="12" r="3" fill="#A259FF" />
+    <circle cx="9" cy="18" r="3" fill="#0ACF83" />
+    <circle cx="15" cy="6" r="3" fill="#FF7262" />
+    <circle cx="15" cy="12" r="3" fill="#1ABCFE" />
+  </svg>
+);
+
+const CursorIcon: FC<IconProps> = (p) => (
+  <svg viewBox="0 0 24 24" width={18} height={18} {...p}>
+    <path fill="#ffffff" d="M4 2l14 8.5-6 1.5-2.5 6L4 2z" />
+  </svg>
+);
+
+/* =========================================================================
+   2. ORBIT TOOL DATA
+   ========================================================================= */
+
+interface OrbitTool {
+  name: string;
+  href: string;
+  Icon: FC<IconProps>;
+  ring: 1 | 2 | 3 | 4;
+  angle: number; // degrees, 0 = right (3 o'clock), clockwise positive
 }
 
-/* --------------------------- AI TOOL ICONS --------------------------- */
+const TOOLS: OrbitTool[] = [
+  { name: 'Claude', href: 'https://claude.ai', Icon: ClaudeIcon, ring: 1, angle: 270 },
+  { name: 'lovable', href: 'https://lovable.dev', Icon: LovableIcon, ring: 1, angle: 180 },
+  { name: 'Perplexity', href: 'https://perplexity.ai', Icon: PerplexityIcon, ring: 1, angle: 0 },
+  { name: 'Runway', href: 'https://runwayml.com', Icon: RunwayIcon, ring: 1, angle: 100 },
 
-const OpenAIIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="white"><path d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6 6 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.06 6.06 0 0 0 .74 7.1 5.98 5.98 0 0 0 .52 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.05 6.05 0 0 0 5.77-4.19 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.09zm-9.02 12.63a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.78.78 0 0 0 .39-.68v-6.74l2.02 1.17c.02 0 .03.03.04.05v5.58a4.5 4.5 0 0 1-4.49 4.5z" /></svg>
-);
-const ClaudeIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><path fill="#D97757" d="M4.7 15.5l4.6-2.6.08-.23-.08-.13H9.07L6.5 12.4l-3.5-.19-3.03-.16 2.94-.13L5.87 12l3.24.22.06.06.02-.05-.02-.03-.06-.13.06-.05.13-.06.35-.03.9-.03 1.75-.03 2.6-.08 1.5-.07 2.44.28 2.35.66L21 13.5l1.28.72.42.4-.07.16-.16-.02-2.3-.35-2.8-.19-3.65-.4-3.9-.31L6.5 13.7l-1.8.9z"/></svg>
-);
-const GeminiIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><defs><linearGradient id="gem-g" x1="0" x2="1" y1="1" y2="0"><stop offset="0" stopColor="#4285F4" /><stop offset="0.5" stopColor="#9B72F2" /><stop offset="1" stopColor="#D96570" /></linearGradient></defs><path fill="url(#gem-g)" d="M12 2c.6 5.5 4.5 9.4 10 10-5.5.6-9.4 4.5-10 10-.6-5.5-4.5-9.4-10-10 5.5-.6 9.4-4.5 10-10z" /></svg>
-);
-const PerplexityIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="#20B8CD"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3L19.5 8 12 11.7 4.5 8 12 4.3z"/></svg>
-);
-const MidjourneyIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="white"><path d="M2 20c3-9 7-14 20-18-3 9-7 14-20 18zm3-3c9-3 13-8 15-13-9 3-13 8-15 13z"/></svg>
-);
-const HuggingFaceIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><circle cx="12" cy="12" r="10" fill="#FFD21E" /><ellipse cx="8.5" cy="10.5" rx="1.4" ry="1.6" fill="#0b0b0d" /><ellipse cx="15.5" cy="10.5" rx="1.4" ry="1.6" fill="#0b0b0d" /><path d="M7.5 14c1.5 2.5 7.5 2.5 9 0" stroke="#0b0b0d" strokeWidth="1.6" fill="#F94D6A" /></svg>
-);
-const ChatGPTIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="#10A37F"><path d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6 6 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.06 6.06 0 0 0 .74 7.1z" /></svg>
-);
-const RunwayIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="#00E5A0" strokeWidth="2"/><path d="M8 7v10M8 7h6a3 3 0 0 1 0 6H8m6 0l3 4" stroke="#00E5A0" strokeWidth="2" fill="none"/></svg>
-);
-const CopilotIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><path fill="#7B2FBE" d="M12 3a9 9 0 0 0-9 9c0 3.5 2 6.5 5 8v-3a5 5 0 1 1 8 0v3c3-1.5 5-4.5 5-8a9 9 0 0 0-9-9z"/><ellipse cx="9" cy="12" rx="1.4" ry="2" fill="white"/><ellipse cx="15" cy="12" rx="1.4" ry="2" fill="white"/></svg>
-);
-const NotionIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><rect x="2" y="2" width="20" height="20" rx="3" fill="white" /><path d="M7 7v10l2 .5V10l6 8 2-.5V7l-2-.5v7l-6-8z" fill="#0b0b0d" /></svg>
-);
-const FigmaIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><path fill="#F24E1E" d="M8 2h4v6H8a3 3 0 0 1 0-6z" /><path fill="#A259FF" d="M12 2h4a3 3 0 0 1 0 6h-4V2z" /><path fill="#FF7262" d="M8 8h4v6H8a3 3 0 0 1 0-6z" /><path fill="#1ABCFE" d="M18 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" /><path fill="#0ACF83" d="M8 14h4v3a3 3 0 1 1-4-3z" /></svg>
-);
-const CursorIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="white"><path d="M4 3l16 8-7 2-2 7L4 3z" /></svg>
-);
-const LovableIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className}><path fill="#FF6B9D" d="M12 21s-8-5.5-8-11.5a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-8 11.5-8 11.5h-2z" /></svg>
-);
+  { name: 'OpenAI', href: 'https://openai.com', Icon: OpenAIIcon, ring: 2, angle: 250 },
+  { name: 'ChatGPT', href: 'https://chatgpt.com', Icon: ChatGPTIcon, ring: 2, angle: 190 },
+  { name: 'Copilot', href: 'https://copilot.microsoft.com', Icon: CopilotIcon, ring: 2, angle: 60 },
+  { name: 'Notion', href: 'https://notion.so', Icon: NotionIcon, ring: 2, angle: 150 },
 
-/* --------------------------- ORBIT DATA --------------------------- */
+  { name: 'Gemini', href: 'https://gemini.google.com', Icon: GeminiIcon, ring: 3, angle: 300 },
+  { name: 'Midjourney', href: 'https://midjourney.com', Icon: MidjourneyIcon, ring: 3, angle: 20 },
+  { name: 'Figma', href: 'https://figma.com', Icon: FigmaIcon, ring: 3, angle: 90 },
 
-const TOOLS = [
-  // Ring 1 (Inner)
-  { name: "Figma", Icon: FigmaIcon, href: "https://figma.com", ring: 1, angle: 45 },
-  { name: "Runway", Icon: RunwayIcon, href: "https://runwayml.com", ring: 1, angle: 135 },
-  { name: "Notion", Icon: NotionIcon, href: "https://notion.so", ring: 1, angle: 225 },
-  { name: "Cursor", Icon: CursorIcon, href: "https://cursor.com", ring: 1, angle: 315 },
-
-  // Ring 2 (Middle)
-  { name: "Copilot", Icon: CopilotIcon, href: "https://copilot.microsoft.com", ring: 2, angle: 15 },
-  { name: "Hugging Face", Icon: HuggingFaceIcon, href: "https://huggingface.co", ring: 2, angle: 90 },
-  { name: "ChatGPT", Icon: ChatGPTIcon, href: "https://chatgpt.com", ring: 2, angle: 190 },
-  { name: "lovable", Icon: LovableIcon, href: "https://lovable.dev", ring: 2, angle: 260 },
-
-  // Ring 3 (Outer)
-  { name: "Perplexity", Icon: PerplexityIcon, href: "https://perplexity.ai", ring: 3, angle: 30 },
-  { name: "Midjourney", Icon: MidjourneyIcon, href: "https://midjourney.com", ring: 3, angle: 110 },
-  { name: "Gemini", Icon: GeminiIcon, href: "https://gemini.google.com", ring: 3, angle: 160 },
-  { name: "OpenAI", Icon: OpenAIIcon, href: "https://openai.com", ring: 3, angle: 250 },
-  { name: "Claude", Icon: ClaudeIcon, href: "https://claude.ai", ring: 3, angle: 330 },
+  { name: 'Hugging Face', href: 'https://huggingface.co', Icon: HuggingFaceIcon, ring: 4, angle: 340 },
+  { name: 'Cursor', href: 'https://cursor.com', Icon: CursorIcon, ring: 4, angle: 70 },
 ];
 
-const RING_RADII = { 1: 160, 2: 280, 3: 400 };
-const RING_DURATIONS = { 1: 40, 2: 60, 3: 80 };
+const RING_CONFIG: Record<
+  1 | 2 | 3 | 4,
+  { sizePct: number; radiusCqw: number; duration: number; dir: 1 | -1 }
+> = {
+  1: { sizePct: 48, radiusCqw: 24, duration: 120, dir: 1 },
+  2: { sizePct: 66, radiusCqw: 33, duration: 150, dir: -1 },
+  3: { sizePct: 82, radiusCqw: 41, duration: 120, dir: 1 },
+  4: { sizePct: 98, radiusCqw: 49, duration: 150, dir: -1 },
+};
 
-export function Hero() {
-  const { ref, inView } = useInView<HTMLDivElement>(0.1);
+/* =========================================================================
+   3. STAR FIELD DATA
+   ========================================================================= */
 
-  return (
-    <section id="top" className="relative w-full h-screen min-h-[950px] bg-[#05010d] overflow-hidden flex flex-col justify-start text-white">
-      
-      {/* 1. TWINKLING STARFIELD BACKGROUND */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="stars-layer stars-small" />
-        <div className="stars-layer stars-medium" />
-        <div className="stars-layer stars-large" />
-      </div>
-
-      {/* 2. MAIN CONTENT CONTAINER (Text on Left) */}
-      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12 pt-[140px] md:pt-[180px]">
-        <div ref={ref} className="max-w-[600px]">
-          
-          {/* Badge */}
-          <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-[#0d061f]/60 px-4 py-1.5 text-[11px] font-mono tracking-[0.2em] text-white/70 uppercase backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_#a855f7]" />
-              Admissions Open · Batch 01
-            </div>
-          </Reveal>
-
-          {/* Heading */}
-          <h1 className="mt-8 font-display text-[clamp(3rem,6vw,5.5rem)] font-bold leading-[1.05] tracking-tight uppercase">
-            <span className={`block text-white transition-all duration-1000 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-              Build the Future.
-            </span>
-            <span 
-              className={`block text-[#a074ff] transition-all duration-1000 delay-150 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
-              style={{ textShadow: "0 0 50px rgba(160, 116, 255, 0.5)" }}
-            >
-              Start Now.
-            </span>
-          </h1>
-
-          {/* Divider */}
-          <Reveal delay={280} className="mt-8 flex items-center gap-3">
-            <div className="h-2 w-2 rotate-45 bg-[#a074ff] shadow-[0_0_12px_#a074ff]" />
-            <div className="h-px w-64 bg-gradient-to-r from-[#a074ff] to-transparent opacity-50" />
-          </Reveal>
-
-          {/* Description */}
-          <Reveal delay={340}>
-            <p className="mt-8 text-[16px] text-white/60 leading-relaxed font-light">
-              Spark Labs is a 6-week AI innovation program for students aged 12–25. No lectures. No theory dumps. Just you, the right tools, and real-world projects that make an impact.
-            </p>
-          </Reveal>
-
-          {/* Buttons */}
-          <Reveal delay={440} className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <Link
-              to="/admissions"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] px-7 py-3.5 text-[15px] font-medium text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all duration-300 hover:shadow-[0_0_45px_rgba(124,58,237,0.7)] hover:-translate-y-0.5 border border-purple-400/20"
-            >
-              Apply for Admission
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <ApplyButton mode="counsel" variant="ghost" className="rounded-full border border-white/20 bg-[#0a0514]/50 px-7 py-3.5 text-[15px] text-white/90 transition-all hover:bg-white/10 hover:border-white/30 backdrop-blur-md">
-              <CalendarCheck className="h-4 w-4 text-white/70 mr-1" />
-              Book a Free Counseling Session
-            </ApplyButton>
-          </Reveal>
-        </div>
-      </div>
-
-      {/* 3. ABSOLUTE POSITIONED ORBIT SYSTEM (Immune to Flex/Grid distortion) */}
-      <div className="absolute top-[35%] lg:top-[45%] right-[10%] lg:right-[25%] w-0 h-0 z-10 hidden md:block">
-        
-        {/* Faint Background Rings */}
-        <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.05] pointer-events-none" style={{ width: RING_RADII[1]*2, height: RING_RADII[1]*2 }} />
-        <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.05] pointer-events-none" style={{ width: RING_RADII[2]*2, height: RING_RADII[2]*2 }} />
-        <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.05] pointer-events-none" style={{ width: RING_RADII[3]*2, height: RING_RADII[3]*2 }} />
-
-        {/* Core Spark Logo */}
-        <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 z-20">
-          <div className="flex items-center justify-center h-28 w-28 rounded-full bg-[#05010d] border border-white/10 shadow-[0_0_80px_rgba(160,116,255,0.15)] backdrop-blur-xl">
-            <SparkMark className="h-12 w-12 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]" />
-          </div>
-        </div>
-
-        {/* Orbiting Tools */}
-        {TOOLS.map((tool) => {
-          const radius = RING_RADII[tool.ring as keyof typeof RING_RADII];
-          const duration = RING_DURATIONS[tool.ring as keyof typeof RING_DURATIONS];
-
-          return (
-            <div key={tool.name} className="absolute top-0 left-0 z-30" style={{ transform: `rotate(${tool.angle}deg)` }}>
-              <div className="orbit-spin" style={{ animationDuration: `${duration}s` }}>
-                <div style={{ transform: `translate(0, -${radius}px)` }}>
-                  <div className="orbit-counter-spin" style={{ animationDuration: `${duration}s` }}>
-                    <div style={{ transform: `rotate(-${tool.angle}deg)` }}>
-                      
-                      {/* Actual Tool Badge */}
-                      <a
-                        href={tool.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2.5 rounded-[14px] border border-white/10 bg-[#0d071f]/80 px-4 py-2.5 text-[13px] font-medium text-white/90 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-purple-500/60 hover:bg-[#160a33] hover:shadow-[0_0_25px_rgba(160,116,255,0.4)] whitespace-nowrap"
-                      >
-                        <tool.Icon />
-                        <span>{tool.name}</span>
-                      </a>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* 4. BOTTOM PLANET & STATS CONTAINER */}
-      <div className="absolute bottom-0 left-0 w-full h-[400px] pointer-events-none z-20 overflow-hidden">
-        
-        {/* Massive Planet Horizon */}
-        <div className="absolute bottom-[-200px] left-1/2 -translate-x-1/2 w-[250vw] md:w-[150vw] h-[500px]">
-          <div className="w-full h-full rounded-[100%] bg-[#030108] border-t-[1px] border-[#a074ff]/40 shadow-[inset_0_80px_150px_rgba(160,116,255,0.1)] relative overflow-hidden">
-            
-            {/* Soft Ambient Inner Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[radial-gradient(ellipse_at_top,rgba(160,116,255,0.15),transparent_70%)]" />
-          </div>
-        </div>
-        
-        {/* Intense Central Lens Flare at Planet Horizon */}
-        <div className="absolute bottom-[280px] left-1/2 -translate-x-1/2 w-[80vw] max-w-[1000px] h-[150px] bg-[radial-gradient(ellipse_at_center,rgba(160,116,255,0.4)_0%,transparent_60%)] blur-[30px]" />
-        <div className="absolute bottom-[290px] left-1/2 -translate-x-1/2 w-[400px] h-[30px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,rgba(160,116,255,0.6)_40%,transparent_70%)] blur-[8px]" />
-
-      </div>
-
-      {/* 5. FLOATING STATS PILL (Above Planet) */}
-      <div className="absolute bottom-[80px] left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 z-30">
-        <Reveal delay={500}>
-          <div className="flex flex-col sm:flex-row items-center justify-between rounded-3xl border border-white/10 bg-[#080315]/60 px-8 py-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl gap-6 sm:gap-4">
-            <StatPill Icon={Users} value="32+" label="Students per batch" />
-            <div className="hidden sm:block w-px h-12 bg-white/10" />
-            <StatPill Icon={FlaskConical} value="16+" label="Hands-on projects" />
-            <div className="hidden sm:block w-px h-12 bg-white/10" />
-            <StatPill Icon={Clock} value="21 Days" label="Intensive journey" />
-            <div className="hidden sm:block w-px h-12 bg-white/10" />
-            <StatPill Icon={Rocket} value="Real World" label="Impact driven" />
-          </div>
-        </Reveal>
-      </div>
-
-      {/* 6. BOTTOM TAGLINE */}
-      <div className="absolute bottom-[20px] left-1/2 -translate-x-1/2 w-full z-30 text-center">
-        <Reveal delay={600}>
-          <p className="font-mono text-[11px] font-bold tracking-[0.3em] text-[#8b5cf6] uppercase">
-            Learn. Build. Ship. Impact.
-          </p>
-          <p className="mt-1.5 text-[11px] text-white/30 font-light tracking-wide">
-            Supported by the world's most powerful AI tools.
-          </p>
-        </Reveal>
-      </div>
-
-      {/* ----------------- STYLES ----------------- */}
-      <style>{`
-        /* True Orbital Math Animations */
-        .orbit-spin {
-          position: absolute;
-          top: 0; left: 0;
-          animation: orbit-spin-keyframes linear infinite;
-        }
-        .orbit-counter-spin {
-          position: absolute;
-          animation: orbit-counter-spin-keyframes linear infinite;
-        }
-        @keyframes orbit-spin-keyframes {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes orbit-counter-spin-keyframes {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-
-        /* Twinkling Starfield Generator */
-        .stars-layer {
-          position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          width: 100%; height: 100%;
-        }
-        
-        .stars-small {
-          background: transparent;
-          box-shadow: 
-            10vw 20vh 1px 0px rgba(255,255,255,0.8),
-            80vw 10vh 1px 0px rgba(255,255,255,0.6),
-            50vw 50vh 1px 0px rgba(255,255,255,0.9),
-            20vw 80vh 1px 0px rgba(255,255,255,0.7),
-            90vw 70vh 1px 0px rgba(255,255,255,0.5),
-            40vw 15vh 1px 0px rgba(255,255,255,0.8),
-            60vw 85vh 1px 0px rgba(255,255,255,0.9),
-            15vw 40vh 1px 0px rgba(255,255,255,0.6),
-            75vw 35vh 1px 0px rgba(255,255,255,0.7),
-            30vw 60vh 1px 0px rgba(255,255,255,0.8),
-            5vw 90vh 1px 0px rgba(255,255,255,0.9),
-            95vw 30vh 1px 0px rgba(255,255,255,0.6),
-            45vw 30vh 1px 0px rgba(255,255,255,0.9),
-            85vw 90vh 1px 0px rgba(255,255,255,0.7);
-          animation: twinkle-1 3s ease-in-out infinite alternate;
-        }
-
-        .stars-medium {
-          background: transparent;
-          box-shadow: 
-            25vw 30vh 1.5px 0px rgba(255,255,255,0.7),
-            65vw 20vh 1.5px 0px rgba(216,180,254,0.8),
-            85vw 50vh 1.5px 0px rgba(255,255,255,0.6),
-            15vw 70vh 1.5px 0px rgba(255,255,255,0.9),
-            45vw 85vh 1.5px 0px rgba(216,180,254,0.7),
-            8vw 15vh 1.5px 0px rgba(255,255,255,0.8),
-            95vw 80vh 1.5px 0px rgba(255,255,255,0.7),
-            55vw 45vh 1.5px 0px rgba(216,180,254,0.9),
-            35vw 90vh 1.5px 0px rgba(255,255,255,0.8),
-            75vw 65vh 1.5px 0px rgba(216,180,254,0.7);
-          animation: twinkle-2 5s ease-in-out infinite alternate-reverse;
-        }
-
-        .stars-large {
-          background: transparent;
-          box-shadow: 
-            35vw 40vh 2px 0px rgba(255,255,255,1),
-            70vw 15vh 2px 0px rgba(216,180,254,0.9),
-            20vw 90vh 2px 0px rgba(255,255,255,0.8),
-            80vw 80vh 2px 0px rgba(255,255,255,1),
-            88vw 30vh 2px 0px rgba(216,180,254,0.8),
-            10vw 60vh 2px 0px rgba(255,255,255,0.9);
-          animation: twinkle-3 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes twinkle-1 { 0% { opacity: 0.2; } 100% { opacity: 1; } }
-        @keyframes twinkle-2 { 0% { opacity: 0.1; } 100% { opacity: 0.9; } }
-        @keyframes twinkle-3 { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
-      `}</style>
-    </section>
-  );
+function starLayer(seed: number, size: string) {
+  const dots: string[] = [];
+  const count = 13;
+  for (let i = 0; i < count; i++) {
+    const x = (seed * (i + 1) * 37) % 100;
+    const y = (seed * (i + 2) * 53) % 100;
+    dots.push(`radial-gradient(${size} ${size} at ${x}% ${y}%, #fff, transparent)`);
+  }
+  return dots.join(', ');
 }
 
-function StatPill({ Icon, value, label }: { Icon: any; value: string; label: string }) {
+/* =========================================================================
+   4. COUNSELING MODAL (self-contained placeholder)
+   ========================================================================= */
+
+const CounselingModal: FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+  if (!open) return null;
   return (
-    <div className="flex items-center gap-4 text-left w-full sm:w-auto justify-center sm:justify-start">
-      <span className="flex-shrink-0 text-[#9b66ff]">
-        <Icon className="h-6 w-6 stroke-[1.5]" />
-      </span>
-      <div className="leading-tight">
-        <div className="font-display text-[1.15rem] font-semibold text-white/90">{value}</div>
-        <div className="mt-0.5 font-mono text-[9px] tracking-wider text-white/40 uppercase">{label}</div>
+    <div className="sl-modal-backdrop" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="sl-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button className="sl-modal-close" onClick={onClose} aria-label="Close">
+          ✕
+        </button>
+        <h3 className="text-xl font-bold mb-2">Book a Free Counseling Session</h3>
+        <p className="text-sm text-[var(--color-muted,#9ca3af)] mb-4">
+          Tell us a bit about you and we&apos;ll reach out to schedule a free session with our team.
+        </p>
+        {/* ADAPT: replace with your real booking form / calendar embed / Supabase form handler */}
+        <a
+          href="mailto:hello@sparklabs.in?subject=Free Counseling Session"
+          className="sl-cta-primary inline-flex"
+        >
+          Email us →
+        </a>
       </div>
     </div>
   );
-}
+};
+
+/* =========================================================================
+   5. HERO COMPONENT
+   ========================================================================= */
+
+const Divider = () => (
+  <div className="flex items-center gap-3 my-6">
+    <span className="h-1.5 w-1.5 rounded-full bg-[#a78bfa] shrink-0" />
+    <span className="sl-divider-line h-px flex-1 max-w-[140px]" />
+  </div>
+);
+
+const OrbitRing: FC<{ ring: 1 | 2 | 3 | 4; children: ReactNode }> = ({ ring, children }) => {
+  const cfg = RING_CONFIG[ring];
+  const spinName = cfg.dir === 1 ? 'sl-spin-cw' : 'sl-spin-ccw';
+  return (
+    <div className="sl-ring" style={{ width: `${cfg.sizePct}%`, height: `${cfg.sizePct}%` }}>
+      <div
+        className="sl-ring-spin"
+        style={{ animation: `${spinName} ${cfg.duration}s linear infinite` }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const OrbitBadge: FC<{ tool: OrbitTool; index: number }> = ({ tool, index }) => {
+  const cfg = RING_CONFIG[tool.ring];
+  const counterName = cfg.dir === 1 ? 'sl-spin-ccw' : 'sl-spin-cw';
+  const Icon = tool.Icon;
+
+  return (
+    <div
+      className="sl-orbit-item"
+      style={{
+        transform: `translate(-50%, -50%) rotate(${tool.angle}deg) translateX(${cfg.radiusCqw}cqw)`,
+      }}
+    >
+      <div className="sl-orbit-fix" style={{ transform: `rotate(${-tool.angle}deg)` }}>
+        <div
+          className="sl-orbit-counter"
+          style={{ animation: `${counterName} ${cfg.duration}s linear infinite` }}
+        >
+          <a
+            href={tool.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sl-badge"
+            style={{ animationDelay: `${(index % 5) * 0.4}s` }}
+            aria-label={`Open ${tool.name} website`}
+          >
+            <Icon />
+            <span>{tool.name}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const OrbitScene: FC = () => (
+  <div className="sl-orbit-scene">
+    <div className="sl-orbit-inner">
+      {([1, 2, 3, 4] as const).map((ring) => (
+        <OrbitRing key={ring} ring={ring}>
+          {TOOLS.filter((t) => t.ring === ring).map((tool, i) => (
+            <OrbitBadge key={tool.name} tool={tool} index={i} />
+          ))}
+        </OrbitRing>
+      ))}
+
+      <div className="sl-core">
+        <SparkMark className="sl-core-mark" />
+      </div>
+    </div>
+  </div>
+);
+
+const STATS = [
+  { icon: '👥', value: '32+', label: 'Students per batch' },
+  { icon: '🧪', value: '16+', label: 'Hands-on projects' },
+  { icon: '🕐', value: '21 Days', label: 'Intensive journey' },
+  { icon: '🚀', value: 'Real World', label: 'Impact driven' },
+];
+
+const Hero: FC = () => {
+  const [counselingOpen, setCounselingOpen] = useState(false);
+
+  // ADAPT: swap for your real useInView(...) return signature if different.
+  const { ref: headlineRef, inView: headlineInView } = useInView<HTMLDivElement>({
+    threshold: 0.4,
+  });
+
+  return (
+    <section className="sl-hero relative overflow-hidden">
+      {/* ---------------- BACKGROUND (dark mode only) ---------------- */}
+      <div className="sl-space-bg" aria-hidden="true">
+        <div className="sl-top-glow" />
+        <div className="sl-horizon-glow" />
+        <div className="sl-horizon-line" />
+        <div className="sl-stars sl-stars-1" />
+        <div className="sl-stars sl-stars-2" />
+        <div className="sl-stars sl-stars-3" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 lg:py-32">
+        {/* ---------------- TWO COLUMN GRID ---------------- */}
+        <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-16 items-center">
+          {/* -------- LEFT COLUMN -------- */}
+          <div>
+            <Reveal>
+              <span className="sl-badge-pill">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#a78bfa]" />
+                Admissions Open · Batch 01
+              </span>
+            </Reveal>
+
+            <div ref={headlineRef} className={`sl-headline ${headlineInView ? 'sl-inview' : ''}`}>
+              <span className="sl-headline-line">
+                <span className="sl-headline-text sl-line-1">Build The Future.</span>
+              </span>
+              <span className="sl-headline-line">
+                <span className="sl-headline-text sl-line-2">Start Now.</span>
+              </span>
+            </div>
+
+            <Divider />
+
+            <Reveal>
+              <p className="sl-body-text max-w-md">
+                Spark Labs is a 6-week AI innovation program for students aged 12–25. No
+                lectures. No theory dumps. Just you, the right tools, and real-world projects
+                that make an impact.
+              </p>
+            </Reveal>
+
+            <Reveal>
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                <ApplyButton href="/admissions" className="sl-cta-primary">
+                  Apply for Admission <span aria-hidden="true">→</span>
+                </ApplyButton>
+                <button className="sl-cta-ghost" onClick={() => setCounselingOpen(true)}>
+                  <span aria-hidden="true">📅</span> Book a Free Counseling Session
+                </button>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* -------- RIGHT COLUMN — ORBIT SCENE -------- */}
+          <Reveal>
+            <OrbitScene />
+          </Reveal>
+        </div>
+
+        {/* ---------------- STATS BAR ---------------- */}
+        <Reveal>
+          <div className="sl-stats-card mx-auto max-w-5xl mt-20">
+            {STATS.map((s) => (
+              <div key={s.label} className="sl-stat">
+                <div className="sl-stat-icon">{s.icon}</div>
+                <div>
+                  <div className="sl-stat-value">{s.value}</div>
+                  <div className="sl-stat-label">{s.label}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* ---------------- BOTTOM TAGLINE ---------------- */}
+        <div className="text-center mt-12">
+          <p className="sl-tagline">Learn. Build. Ship. Impact.</p>
+          <p className="sl-tagline-sub">Supported by the world&apos;s most powerful AI tools.</p>
+        </div>
+      </div>
+
+      <CounselingModal open={counselingOpen} onClose={() => setCounselingOpen(false)} />
+
+      {/* =========================================================================
+          6. SCOPED STYLES
+         ========================================================================= */}
+      <style>{`
+        .sl-hero {
+          background: #ffffff;
+          color: #0a0a0a;
+        }
+        [data-theme='dark'] .sl-hero {
+          background: #05030b;
+          color: #ffffff;
+        }
+
+        /* ---------- Background: space scene ---------- */
+        .sl-space-bg { display: none; }
+        [data-theme='dark'] .sl-space-bg {
+          display: block;
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        .sl-top-glow {
+          position: absolute;
+          top: -10%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80%;
+          height: 40%;
+          background: radial-gradient(ellipse at center, rgba(167,139,250,0.16) 0%, transparent 70%);
+        }
+        .sl-horizon-glow {
+          position: absolute;
+          left: 50%;
+          bottom: -55%;
+          transform: translateX(-50%);
+          width: 160%;
+          aspect-ratio: 2 / 1;
+          border-radius: 50%;
+          background: radial-gradient(ellipse at center, rgba(167,139,250,0.45) 0%, rgba(167,139,250,0.15) 35%, transparent 70%);
+          filter: blur(2px);
+        }
+        .sl-horizon-line {
+          position: absolute;
+          left: 50%;
+          bottom: -53.5%;
+          transform: translateX(-50%);
+          width: 160%;
+          height: 2px;
+          border-radius: 50%;
+          box-shadow: 0 0 60px 14px rgba(167,139,250,0.55);
+        }
+
+        .sl-stars {
+          position: absolute;
+          inset: 0;
+          background-repeat: no-repeat;
+        }
+        .sl-stars-1 { background-image: ${starLayer(3, '0.8px')}; animation: sl-twinkle-1 3.2s ease-in-out infinite; }
+        .sl-stars-2 { background-image: ${starLayer(7, '1.1px')}; animation: sl-twinkle-2 4.5s ease-in-out infinite; }
+        .sl-stars-3 { background-image: ${starLayer(11, '1.4px')}; animation: sl-twinkle-3 6s ease-in-out infinite; }
+
+        @keyframes sl-twinkle-1 { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+        @keyframes sl-twinkle-2 { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.25; } }
+        @keyframes sl-twinkle-3 { 0%, 100% { opacity: 0.4; } 45% { opacity: 1; } 55% { opacity: 1; } }
+
+        /* ---------- Badge pill ---------- */
+        .sl-badge-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 14px;
+          border-radius: 9999px;
+          border: 1px solid rgba(167,139,250,0.35);
+          background: rgba(167,139,250,0.08);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #a78bfa;
+        }
+
+        /* ---------- Headline ---------- */
+        .sl-headline {
+          margin-top: 20px;
+          font-weight: 900;
+          text-transform: uppercase;
+          line-height: 0.95;
+          letter-spacing: -0.03em;
+          font-size: clamp(2.8rem, 7.5vw, 5.5rem);
+        }
+        .sl-headline-line { display: block; overflow: hidden; }
+        .sl-headline-text {
+          display: inline-block;
+          transform: translateY(115%);
+          transition: transform 0.85s cubic-bezier(.22,1,.36,1);
+        }
+        .sl-headline.sl-inview .sl-line-1 { transform: translateY(0); transition-delay: 0.05s; }
+        .sl-headline.sl-inview .sl-line-2 { transform: translateY(0); transition-delay: 0.22s; }
+        .sl-line-1 { color: #0a0a0a; }
+        [data-theme='dark'] .sl-line-1 { color: #ffffff; }
+        .sl-line-2 { color: #a78bfa; }
+
+        /* ---------- Divider ---------- */
+        .sl-divider-line {
+          background: linear-gradient(to right, rgba(167,139,250,0.6), transparent);
+        }
+
+        /* ---------- Body text ---------- */
+        .sl-body-text {
+          color: rgba(10,10,10,0.65);
+          line-height: 1.7;
+          font-size: 1rem;
+        }
+        [data-theme='dark'] .sl-body-text { color: rgba(255,255,255,0.62); }
+
+        /* ---------- CTAs ---------- */
+        .sl-cta-primary {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 24px;
+          border-radius: 9999px;
+          background: #a78bfa;
+          color: #0a0a0a;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .sl-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(167,139,250,0.35); }
+
+        .sl-cta-ghost {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 24px;
+          border-radius: 9999px;
+          border: 1px solid rgba(10,10,10,0.2);
+          background: transparent;
+          color: inherit;
+          font-weight: 600;
+          font-size: 0.95rem;
+          transition: border-color 0.2s ease, background 0.2s ease;
+        }
+        [data-theme='dark'] .sl-cta-ghost { border-color: rgba(255,255,255,0.2); }
+        .sl-cta-ghost:hover { border-color: #a78bfa; background: rgba(167,139,250,0.08); }
+
+        /* ---------- Orbit scene ---------- */
+        .sl-orbit-scene {
+          position: relative;
+          width: 100%;
+          max-width: 380px;
+          aspect-ratio: 1 / 1;
+          margin: 0 auto;
+          container-type: inline-size;
+        }
+        @media (min-width: 1024px) {
+          .sl-orbit-scene { max-width: 560px; }
+        }
+        .sl-orbit-inner { position: absolute; inset: 0; }
+
+        .sl-ring {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          border: 1px solid rgba(255,255,255,0.10);
+        }
+        [data-theme='light'] .sl-ring { border-color: transparent; }
+
+        .sl-ring-spin { position: absolute; inset: 0; }
+
+        .sl-orbit-item { position: absolute; top: 50%; left: 50%; }
+        .sl-orbit-fix { display: inline-block; }
+        .sl-orbit-counter { display: inline-block; }
+
+        .sl-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border-radius: 9999px;
+          background: rgba(10,7,20,0.7);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255,255,255,0.15);
+          color: #ffffff;
+          font-size: 13px;
+          white-space: nowrap;
+          text-decoration: none;
+          animation: sl-badge-glow 3.2s ease-in-out infinite;
+          transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .sl-badge:hover { transform: scale(1.05); border-color: rgba(167,139,250,0.85); }
+
+        [data-theme='light'] .sl-badge {
+          background: #ffffff;
+          color: #0a0a0a;
+          border-color: rgba(10,10,10,0.12);
+          box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        @keyframes sl-badge-glow {
+          0%, 100% { box-shadow: 0 0 0 rgba(255,255,255,0.05); }
+          50% { box-shadow: 0 0 12px rgba(167,139,250,0.55); }
+        }
+
+        @keyframes sl-spin-cw { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes sl-spin-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+        /* ---------- Central core ---------- */
+        .sl-core {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 112px;
+          height: 112px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: radial-gradient(circle at center, rgba(167,139,250,0.35), rgba(167,139,250,0.05) 60%, transparent 75%);
+          animation: sl-core-breathe 3.5s ease-in-out infinite;
+        }
+        .sl-core-mark {
+          width: 48px;
+          height: 48px;
+          color: #ffffff;
+        }
+        [data-theme='light'] .sl-core-mark { color: #0a0a0a; }
+
+        @keyframes sl-core-breathe {
+          0%, 100% {
+            box-shadow: 0 0 30px 10px rgba(167,139,250,0.25), 0 0 60px 20px rgba(167,139,250,0.10);
+          }
+          50% {
+            box-shadow: 0 0 50px 18px rgba(167,139,250,0.45), 0 0 90px 30px rgba(167,139,250,0.18);
+          }
+        }
+
+        /* ---------- Stats bar ---------- */
+        .sl-stats-card {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          border-radius: 1rem;
+          border: 1px solid rgba(10,10,10,0.1);
+          background: rgba(255,255,255,0.6);
+          backdrop-filter: blur(10px);
+          overflow: hidden;
+        }
+        [data-theme='dark'] .sl-stats-card {
+          border-color: rgba(255,255,255,0.1);
+          background: rgba(255,255,255,0.03);
+        }
+        @media (min-width: 768px) {
+          .sl-stats-card { grid-template-columns: repeat(4, 1fr); }
+        }
+        .sl-stat {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 20px 24px;
+          border-right: 1px solid rgba(10,10,10,0.08);
+          border-bottom: 1px solid rgba(10,10,10,0.08);
+        }
+        [data-theme='dark'] .sl-stat {
+          border-color: rgba(255,255,255,0.08);
+        }
+        .sl-stat:nth-child(2n) { border-right: none; }
+        @media (min-width: 768px) {
+          .sl-stat { border-bottom: none; }
+          .sl-stat:nth-child(2n) { border-right: 1px solid rgba(10,10,10,0.08); }
+          [data-theme='dark'] .sl-stat:nth-child(2n) { border-right-color: rgba(255,255,255,0.08); }
+          .sl-stat:last-child { border-right: none; }
+        }
+        .sl-stat-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          background: rgba(167,139,250,0.14);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          flex-shrink: 0;
+        }
+        .sl-stat-value { font-size: 1.4rem; font-weight: 800; line-height: 1; }
+        .sl-stat-label {
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: rgba(10,10,10,0.5);
+          margin-top: 4px;
+        }
+        [data-theme='dark'] .sl-stat-label { color: rgba(255,255,255,0.5); }
+
+        /* ---------- Tagline ---------- */
+        .sl-tagline {
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          font-weight: 700;
+          color: #a78bfa;
+          font-size: 0.9rem;
+        }
+        .sl-tagline-sub {
+          margin-top: 6px;
+          font-size: 0.85rem;
+          color: rgba(10,10,10,0.5);
+        }
+        [data-theme='dark'] .sl-tagline-sub { color: rgba(255,255,255,0.45); }
+
+        /* ---------- Counseling modal ---------- */
+        .sl-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.6);
+          backdrop-filter: blur(4px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 100;
+          padding: 20px;
+        }
+        .sl-modal-card {
+          position: relative;
+          width: 100%;
+          max-width: 420px;
+          background: #ffffff;
+          color: #0a0a0a;
+          border-radius: 16px;
+          padding: 28px;
+        }
+        [data-theme='dark'] .sl-modal-card {
+          background: #0d0a17;
+          color: #ffffff;
+          border: 1px solid rgba(255,255,255,0.1);
+        }
+        .sl-modal-close {
+          position: absolute;
+          top: 14px;
+          right: 14px;
+          background: none;
+          border: none;
+          font-size: 16px;
+          cursor: pointer;
+          color: inherit;
+          opacity: 0.6;
+        }
+        .sl-modal-close:hover { opacity: 1; }
+      `}</style>
+    </section>
+  );
+};
+
+export default Hero;
