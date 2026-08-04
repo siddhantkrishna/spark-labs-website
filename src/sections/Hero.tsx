@@ -26,7 +26,7 @@ function useInView<T extends HTMLElement>(threshold = 0.18) {
   return { ref, inView };
 }
 
-/* --------------------------- AI TOOL ICONS (accurate brand SVGs) --------------------------- */
+/* --------------------------- AI TOOL ICONS --------------------------- */
 
 const OpenAIIcon = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="white" aria-hidden="true">
@@ -143,57 +143,71 @@ type Tool = {
   name: string;
   Icon: (p: { className?: string }) => JSX.Element;
   href: string;
-  /** angle in degrees on the orbit */
   angle: number;
-  /** which orbit ring (0 = innermost, 3 = outermost) */
   ring: 0 | 1 | 2 | 3;
 };
 
 const TOOLS: Tool[] = [
-  { name: "OpenAI",       Icon: OpenAIIcon,       href: "https://openai.com",         angle: -80, ring: 3 },
-  { name: "Claude",       Icon: ClaudeIcon,       href: "https://claude.ai",          angle: -55, ring: 3 },
-  { name: "Gemini",       Icon: GeminiIcon,       href: "https://gemini.google.com",  angle: -25, ring: 3 },
-  { name: "Perplexity",   Icon: PerplexityIcon,   href: "https://perplexity.ai",      angle: 10,  ring: 2 },
-  { name: "Midjourney",   Icon: MidjourneyIcon,   href: "https://midjourney.com",     angle: 30,  ring: 3 },
-  { name: "lovable",      Icon: LovableIcon,      href: "https://lovable.dev",        angle: -155, ring: 2 },
-  { name: "ChatGPT",      Icon: ChatGPTIcon,      href: "https://chatgpt.com",        angle: 165, ring: 2 },
-  { name: "Hugging Face", Icon: HuggingFaceIcon,  href: "https://huggingface.co",     angle: 55,  ring: 2 },
-  { name: "Runway",       Icon: RunwayIcon,       href: "https://runwayml.com",       angle: 130, ring: 1 },
+  { name: "OpenAI",       Icon: OpenAIIcon,       href: "https://openai.com",          angle: -80, ring: 3 },
+  { name: "Claude",       Icon: ClaudeIcon,       href: "https://claude.ai",           angle: -55, ring: 3 },
+  { name: "Gemini",       Icon: GeminiIcon,       href: "https://gemini.google.com",   angle: -25, ring: 3 },
+  { name: "Perplexity",   Icon: PerplexityIcon,   href: "https://perplexity.ai",       angle: 10,  ring: 2 },
+  { name: "Midjourney",   Icon: MidjourneyIcon,   href: "https://midjourney.com",      angle: 30,  ring: 3 },
+  { name: "lovable",      Icon: LovableIcon,      href: "https://lovable.dev",         angle: -155, ring: 2 },
+  { name: "ChatGPT",      Icon: ChatGPTIcon,      href: "https://chatgpt.com",         angle: 165, ring: 2 },
+  { name: "Hugging Face", Icon: HuggingFaceIcon,  href: "https://huggingface.co",      angle: 55,  ring: 2 },
+  { name: "Runway",       Icon: RunwayIcon,       href: "https://runwayml.com",        angle: 130, ring: 1 },
   { name: "Copilot",      Icon: CopilotIcon,      href: "https://copilot.microsoft.com", angle: 65, ring: 1 },
-  { name: "Notion",       Icon: NotionIcon,       href: "https://notion.so",          angle: -125, ring: 1 },
-  { name: "Figma",        Icon: FigmaIcon,        href: "https://figma.com",          angle: 100, ring: 0 },
-  { name: "Cursor",       Icon: CursorIcon,       href: "https://cursor.com",         angle: 45,  ring: 0 },
+  { name: "Notion",       Icon: NotionIcon,       href: "https://notion.so",           angle: -125, ring: 1 },
+  { name: "Figma",        Icon: FigmaIcon,        href: "https://figma.com",           angle: 100, ring: 0 },
+  { name: "Cursor",       Icon: CursorIcon,       href: "https://cursor.com",          angle: 45,  ring: 0 },
 ];
 
-/* radii as % of container half-size */
-const RING_RADII = ["30%", "42%", "54%", "66%"];
+const RING_RADII = ["28%", "45%", "62%", "78%"];
 
 function ToolBadge({ tool, index }: { tool: Tool; index: number }) {
   const radius = RING_RADII[tool.ring];
-  // Counter-rotate the badge so text stays upright while parent orbit rotates
+  const duration = tool.ring % 2 === 0 ? "80s" : "100s"; // Alternate speeds
+  const delay = `-${index * 6}s`;
+
   return (
     <div
-      className="absolute left-1/2 top-1/2 tool-orbit"
+      className="absolute left-1/2 top-1/2"
       style={{
-        // put each badge on its own tiny "arm" that rotates
-        // We use a rotate + translate + counter-rotate trick
-        transform: `translate(-50%, -50%) rotate(${tool.angle}deg) translateY(-${radius}) rotate(${-tool.angle}deg)`,
-        animation: `orbitDrift 60s linear infinite`,
-        animationDelay: `${-index * 4}s`,
+        transform: `translate(-50%, -50%) rotate(${tool.angle}deg)`,
       }}
     >
-      <a
-        href={tool.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Visit ${tool.name}`}
-        className="tool-badge-inner group relative flex items-center gap-2 rounded-full border border-white/15 bg-[#0a0714]/70 px-3.5 py-2 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-accent-bright/70"
+      <div
+        className="origin-center"
+        style={{
+          animation: `spinOrbit ${duration} linear infinite`,
+          animationDelay: delay,
+        }}
       >
-        <tool.Icon className="h-5 w-5 shrink-0" />
-        <span className="font-sans text-[13px] font-medium tracking-tight text-white whitespace-nowrap">
-          {tool.name}
-        </span>
-      </a>
+        <div style={{ transform: `translateY(-${radius})` }}>
+          <div
+            style={{
+              animation: `counterSpinOrbit ${duration} linear infinite`,
+              animationDelay: delay,
+            }}
+          >
+            <div style={{ transform: `rotate(-${tool.angle}deg)` }}>
+              <a
+                href={tool.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit ${tool.name}`}
+                className="tool-badge-inner group relative flex items-center gap-2 rounded-full border border-white/10 bg-[#0a0714]/80 px-3.5 py-2 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-accent-bright/70"
+              >
+                <tool.Icon className="h-5 w-5 shrink-0" />
+                <span className="font-sans text-[13px] font-medium tracking-tight text-white whitespace-nowrap">
+                  {tool.name}
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -204,44 +218,48 @@ export function Hero() {
   const { ref, inView } = useInView<HTMLDivElement>(0.1);
 
   return (
-    <section id="top" className="relative overflow-hidden pt-[72px] hero-space">
+    <section id="top" className="relative overflow-hidden pt-[72px] hero-space min-h-screen bg-[#05030b]">
       {/* star layers */}
       <div className="pointer-events-none absolute inset-0 hero-stars-1" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 hero-stars-2" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 hero-stars-3" aria-hidden="true" />
+      
       {/* planet horizon */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 hero-horizon" aria-hidden="true" />
-      {/* light-mode fallback grid */}
-      <div className="dotgrid dotgrid-fade pointer-events-none absolute inset-0 hero-dotgrid" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[35vh] overflow-hidden" aria-hidden="true">
+        {/* Planet Arc */}
+        <div className="absolute top-[20%] left-1/2 h-[150vw] w-[150vw] -translate-x-1/2 rounded-[100%] border-t border-white/10 bg-[#05030b] shadow-[inset_0_20px_80px_rgba(139,92,246,0.15),0_-10px_40px_rgba(139,92,246,0.2)]" />
+        {/* Sun Flare */}
+        <div className="absolute top-[18%] left-1/2 h-[120px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-[100%] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.9)_0%,rgba(167,139,250,0.6)_25%,rgba(139,92,246,0.2)_50%,transparent_75%)] blur-[12px]" />
+      </div>
 
-      <div className="relative mx-auto grid max-w-7xl gap-14 px-5 pt-16 pb-24 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-24 lg:pb-32">
-        {/* LEFT */}
-        <div ref={ref}>
+      <div className="relative mx-auto grid max-w-[1400px] gap-14 px-5 pt-16 pb-24 sm:px-8 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:pt-24 lg:pb-32 z-10">
+        {/* LEFT: Content */}
+        <div ref={ref} className="max-w-2xl">
           <Reveal>
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-tint/40 px-3.5 py-1.5 font-mono text-[11px] font-medium tracking-[0.24em] text-accent uppercase backdrop-blur-sm">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 font-mono text-[11px] font-medium tracking-[0.24em] text-white uppercase backdrop-blur-sm">
                 <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-accent-bright" />
                 Admissions Open · Batch 01
               </span>
             </div>
           </Reveal>
 
-          <h1 className="mt-8 font-display text-[clamp(2.8rem,7.5vw,5.5rem)] leading-[0.95] font-black tracking-[-0.03em] text-ink uppercase">
+          <h1 className="mt-8 font-display text-[clamp(2.8rem,7.5vw,5.5rem)] leading-[0.95] font-black tracking-[-0.03em] text-white uppercase">
             <span className={`linemask ${inView ? "is-in" : ""}`}>
               <span>Build the Future.</span>
             </span>
             <span className={`linemask ${inView ? "is-in" : ""}`} style={{ ["--rd" as string]: "140ms" }}>
-              <span className="text-accent">Start Now.</span>
+              <span className="text-accent-bright">Start Now.</span>
             </span>
           </h1>
 
           <Reveal delay={280} className="mt-6 flex items-center gap-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            <span className="h-px w-24 bg-gradient-to-r from-accent to-transparent" />
+            <span className="h-2 w-2 rotate-45 bg-accent-bright" />
+            <span className="h-px w-32 bg-gradient-to-r from-accent-bright to-transparent" />
           </Reveal>
 
           <Reveal delay={340}>
-            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-mute sm:text-lg">
+            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/60 sm:text-lg">
               Spark Labs is a 6-week AI innovation program for students aged 12&ndash;25. No lectures.
               No theory dumps. Just you, the right tools, and real-world projects that make an impact.
             </p>
@@ -250,32 +268,32 @@ export function Hero() {
           <Reveal delay={440} className="mt-9 flex flex-wrap items-center gap-4">
             <Link
               to="/admissions"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3.5 text-[15px] font-semibold text-white shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-deep"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent-bright px-7 py-3.5 text-[15px] font-semibold text-white shadow-[0_0_20px_rgba(167,139,250,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent hover:shadow-[0_0_30px_rgba(167,139,250,0.5)]"
             >
               Apply for Admission
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
-            <ApplyButton mode="counsel" variant="ghost">
-              <CalendarCheck className="h-4 w-4 text-accent" />
+            <ApplyButton mode="counsel" variant="ghost" className="border border-white/10 bg-white/5 text-white hover:bg-white/10">
+              <CalendarCheck className="h-4 w-4 text-accent-bright" />
               Book a Free Counseling Session
             </ApplyButton>
           </Reveal>
         </div>
 
         {/* RIGHT: cosmic orbit scene */}
-        <Reveal delay={200} className="relative">
-          <div className="relative mx-auto aspect-square w-full max-w-[600px]">
-            {/* Orbit rings — rotating slowly in opposite directions */}
-            <div className="absolute inset-[8%]  rounded-full border border-white/10 orbit-ring ring-cw"  />
-            <div className="absolute inset-[20%] rounded-full border border-white/10 orbit-ring ring-ccw" />
-            <div className="absolute inset-[34%] rounded-full border border-white/10 orbit-ring ring-cw"  />
-            <div className="absolute inset-[48%] rounded-full border border-white/10 orbit-ring ring-ccw" />
+        <Reveal delay={200} className="relative hidden lg:block">
+          <div className="relative mx-auto aspect-square w-full max-w-[800px]">
+            {/* Orbit rings */}
+            <div className="absolute inset-[11%] rounded-full border border-white/5 orbit-ring ring-cw"  />
+            <div className="absolute inset-[27%] rounded-full border border-white/5 orbit-ring ring-ccw" />
+            <div className="absolute inset-[44%] rounded-full border border-white/5 orbit-ring ring-cw"  />
+            <div className="absolute inset-[60%] rounded-full border border-white/5 orbit-ring ring-ccw" />
 
             {/* Central spark logo with glow */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
               <div className="relative grid h-28 w-28 place-items-center rounded-full spark-core">
                 <div className="spark-core-glow" />
-                <SparkMark className="relative h-12 w-12 text-accent-bright" />
+                <SparkMark className="relative h-14 w-14 text-white" />
               </div>
             </div>
 
@@ -287,10 +305,10 @@ export function Hero() {
         </Reveal>
       </div>
 
-      {/* STATS PILL */}
-      <div className="relative z-10 mx-auto -mt-6 max-w-5xl px-5 pb-16 sm:px-8">
+      {/* STATS PILL - positioned over the planet */}
+      <div className="relative z-30 mx-auto -mt-12 max-w-5xl px-5 pb-16 sm:px-8">
         <Reveal delay={520}>
-          <div className="grid grid-cols-2 gap-4 rounded-2xl border border-line bg-white/70 p-5 shadow-card backdrop-blur-md sm:grid-cols-4 sm:gap-2 sm:p-6">
+          <div className="grid grid-cols-2 gap-4 rounded-3xl border border-white/10 bg-[#0a0714]/60 p-5 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:grid-cols-4 sm:gap-2 sm:p-6">
             <StatPill Icon={Users}        value="32+"        label="Students per batch" />
             <StatPill Icon={FlaskConical} value="16+"        label="Hands-on projects" />
             <StatPill Icon={Clock}        value="21 Days"    label="Intensive journey" />
@@ -300,10 +318,10 @@ export function Hero() {
 
         <Reveal delay={640}>
           <div className="mt-10 text-center">
-            <p className="font-mono text-[13px] font-semibold tracking-[0.32em] text-accent uppercase">
+            <p className="font-mono text-[13px] font-semibold tracking-[0.32em] text-accent-bright uppercase">
               Learn. Build. Ship. Impact.
             </p>
-            <p className="mt-2 text-[14px] text-mute">
+            <p className="mt-2 text-[14px] text-white/50">
               Supported by the world's most powerful AI tools.
             </p>
           </div>
@@ -311,24 +329,10 @@ export function Hero() {
       </div>
 
       <style>{`
-        .hero-space { background: transparent; }
-        .hero-stars-1, .hero-stars-2, .hero-stars-3 { opacity: 0; }
-        .hero-horizon { opacity: 0; }
-
-        :root[data-theme="dark"] .hero-space {
-          background:
-            radial-gradient(ellipse 90% 60% at 50% 0%, rgba(139,92,246,0.10) 0%, transparent 55%),
-            radial-gradient(ellipse 70% 55% at 50% 100%, rgba(139,92,246,0.28) 0%, transparent 60%),
-            #05030b;
-        }
-        :root[data-theme="dark"] .hero-dotgrid { display: none; }
-
         /* Three parallax star layers, each twinkling on different rhythms */
-        :root[data-theme="dark"] .hero-stars-1,
-        :root[data-theme="dark"] .hero-stars-2,
-        :root[data-theme="dark"] .hero-stars-3 { opacity: 1; }
+        .hero-stars-1, .hero-stars-2, .hero-stars-3 { opacity: 1; }
 
-        :root[data-theme="dark"] .hero-stars-1 {
+        .hero-stars-1 {
           background-image:
             radial-gradient(1px 1px at 5% 10%, #fff, transparent),
             radial-gradient(1px 1px at 12% 22%, #fff, transparent),
@@ -345,7 +349,7 @@ export function Hero() {
           background-repeat: no-repeat;
           animation: twinkleA 3.2s ease-in-out infinite;
         }
-        :root[data-theme="dark"] .hero-stars-2 {
+        .hero-stars-2 {
           background-image:
             radial-gradient(1px 1px at 8% 78%, #fff, transparent),
             radial-gradient(1px 1px at 18% 88%, #fff, transparent),
@@ -362,7 +366,7 @@ export function Hero() {
           background-repeat: no-repeat;
           animation: twinkleB 4.5s ease-in-out infinite;
         }
-        :root[data-theme="dark"] .hero-stars-3 {
+        .hero-stars-3 {
           background-image:
             radial-gradient(0.8px 0.8px at 22% 15%, rgba(255,255,255,0.7), transparent),
             radial-gradient(0.8px 0.8px at 38% 48%, rgba(255,255,255,0.7), transparent),
@@ -380,56 +384,42 @@ export function Hero() {
         @keyframes twinkleB { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
         @keyframes twinkleC { 0%,100% { opacity: 0.7; } 25% { opacity: 0.2; } 75% { opacity: 1; } }
 
-        :root[data-theme="dark"] .hero-horizon {
-          opacity: 1;
-          height: 45%;
-          background:
-            radial-gradient(ellipse 55% 100% at 50% 100%, rgba(167,139,250,0.45) 0%, rgba(139,92,246,0.2) 30%, transparent 65%);
-          filter: blur(1px);
+        /* Orbit logic */
+        @keyframes spinOrbit {
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes counterSpinOrbit {
+          100% { transform: rotate(-360deg); }
         }
 
-        /* Orbit rings */
-        .orbit-ring { opacity: 0; }
-        :root[data-theme="dark"] .orbit-ring { opacity: 1; }
+        .orbit-ring { opacity: 1; }
         .ring-cw  { animation: ringSpinCW  120s linear infinite; }
         .ring-ccw { animation: ringSpinCCW 150s linear infinite; }
         @keyframes ringSpinCW  { to { transform: rotate(360deg); } }
         @keyframes ringSpinCCW { to { transform: rotate(-360deg); } }
 
-        /* Tool badges — slow drift around the center, keep text upright */
-        .tool-orbit {
-          transform-origin: center;
-        }
-        @keyframes orbitDrift {
-          0%   { --k: 0; }
-          100% { --k: 1; }
-        }
-        /* Because we can't animate two rotate() steps easily with plain keyframes,
-           we drive the drift via CSS var on the parent and animate a separate wrapper.
-           Simpler approach below: animate the whole element's rotate using a helper. */
-
         /* Central spark core */
         .spark-core {
-          background: radial-gradient(circle at 50% 50%, rgba(30,15,60,0.9) 0%, rgba(15,8,30,0.95) 60%, rgba(5,3,11,1) 100%);
-          border: 1px solid rgba(167,139,250,0.4);
+          background: #000;
+          border: 1px solid rgba(255,255,255,0.1);
           box-shadow:
-            0 0 0 1px rgba(167,139,250,0.3),
-            0 0 60px rgba(139,92,246,0.5),
-            0 0 120px rgba(139,92,246,0.3),
-            inset 0 0 30px rgba(139,92,246,0.2);
+            0 0 0 1px rgba(167,139,250,0.2),
+            0 0 60px rgba(255,255,255,0.1),
+            0 0 120px rgba(167,139,250,0.15),
+            inset 0 0 30px rgba(255,255,255,0.1);
           animation: coreBreathe 3.5s ease-in-out infinite;
         }
         .spark-core-glow {
           position: absolute;
           inset: -20%;
           border-radius: 9999px;
-          background: radial-gradient(circle, rgba(167,139,250,0.35) 0%, transparent 60%);
+          background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
           filter: blur(15px);
           pointer-events: none;
         }
         @keyframes coreBreathe {
-          0%, 100% { box-shadow: 0 0 0 1px rgba(167,139,250,0.3), 0 0 60px rgba(139,92,246,0.5), 0 0 120px rgba(139,92,246,0.3), inset 0 0 30px rgba(139,92,246,0.2); }
-          50%      { box-shadow: 0 0 0 1px rgba(167,139,250,0.5), 0 0 90px rgba(139,92,246,0.75), 0 0 160px rgba(139,92,246,0.5), inset 0 0 40px rgba(139,92,246,0.35); }
+          0%, 100% { box-shadow: 0 0 0 1px rgba(167,139,250,0.2), 0 0 60px rgba(255,255,255,0.1), 0 0 120px rgba(167,139,250,0.15), inset 0 0 30px rgba(255,255,255,0.1); }
+          50%      { box-shadow: 0 0 0 1px rgba(167,139,250,0.4), 0 0 90px rgba(255,255,255,0.15), 0 0 160px rgba(167,139,250,0.25), inset 0 0 40px rgba(255,255,255,0.15); }
         }
 
         /* Tool badge inner: glowing border pulse */
@@ -439,29 +429,11 @@ export function Hero() {
         }
         @keyframes borderGlow {
           0%, 100% {
-            box-shadow:
-              0 0 0 1px rgba(255,255,255,0.08),
-              0 0 12px rgba(139,92,246,0.2);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 0 12px rgba(139,92,246,0.2);
           }
           50% {
-            box-shadow:
-              0 0 0 1px rgba(167,139,250,0.5),
-              0 0 24px rgba(139,92,246,0.55);
+            box-shadow: 0 0 0 1px rgba(167,139,250,0.5), 0 0 24px rgba(139,92,246,0.4);
           }
-        }
-
-        /* Light mode adjustments for badges */
-        :root:not([data-theme="dark"]) .tool-badge-inner {
-          background: rgba(255,255,255,0.9);
-          border-color: var(--color-line);
-          color: var(--color-ink);
-        }
-        :root:not([data-theme="dark"]) .tool-badge-inner span {
-          color: var(--color-ink);
-        }
-        :root:not([data-theme="dark"]) .spark-core {
-          background: #fff;
-          border-color: var(--color-accent);
         }
       `}</style>
     </section>
@@ -481,12 +453,12 @@ function StatPill({
 }) {
   return (
     <div className="flex items-center gap-3 rounded-xl px-4 py-3">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-accent-tint text-accent">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/5 border border-white/10 text-accent-bright">
         <Icon className="h-5 w-5" />
       </span>
       <div className="leading-tight">
-        <div className="font-display text-[18px] font-bold text-ink">{value}</div>
-        <div className="font-mono text-[10px] tracking-[0.14em] text-faint uppercase">{label}</div>
+        <div className="font-display text-[18px] font-bold text-white">{value}</div>
+        <div className="font-mono text-[10px] tracking-[0.14em] text-white/50 uppercase">{label}</div>
       </div>
     </div>
   );
