@@ -66,157 +66,264 @@ const LovableIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className}><path fill="#FF6B9D" d="M12 21s-8-5.5-8-11.5a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-8 11.5-8 11.5h-2z" /></svg>
 );
 
-/* --------------------------- POSITIONS (EXACT TO INSPO) --------------------------- */
+/* --------------------------- ORBIT CONFIGURATION --------------------------- */
 
-const TOOL_NODES = [
-  { name: "OpenAI", Icon: OpenAIIcon, href: "https://openai.com", top: "12%", left: "54%" },
-  { name: "Claude", Icon: ClaudeIcon, href: "https://claude.ai", top: "18%", left: "70%" },
-  { name: "Gemini", Icon: GeminiIcon, href: "https://gemini.google.com", top: "22%", left: "86%" },
-  { name: "lovable", Icon: LovableIcon, href: "https://lovable.dev", top: "34%", left: "48%" },
-  { name: "Perplexity", Icon: PerplexityIcon, href: "https://perplexity.ai", top: "33%", left: "73%" },
-  { name: "Midjourney", Icon: MidjourneyIcon, href: "https://midjourney.com", top: "35%", left: "88%" },
-  { name: "ChatGPT", Icon: ChatGPTIcon, href: "https://chatgpt.com", top: "48%", left: "44%" },
-  { name: "Hugging Face", Icon: HuggingFaceIcon, href: "https://huggingface.co", top: "47%", left: "84%" },
-  { name: "Runway", Icon: RunwayIcon, href: "https://runwayml.com", top: "54%", left: "60%" },
-  { name: "Copilot", Icon: CopilotIcon, href: "https://copilot.microsoft.com", top: "54%", left: "76%" },
-  { name: "Notion", Icon: NotionIcon, href: "https://notion.so", top: "62%", left: "50%" },
-  { name: "Figma", Icon: FigmaIcon, href: "https://figma.com", top: "66%", left: "64%" },
-  { name: "Cursor", Icon: CursorIcon, href: "https://cursor.com", top: "65%", left: "79%" },
+// 1 = inner, 2 = middle, 3 = outer
+const TOOLS = [
+  { name: "Figma", Icon: FigmaIcon, href: "https://figma.com", ring: 1, angle: 0 },
+  { name: "Cursor", Icon: CursorIcon, href: "https://cursor.com", ring: 1, angle: 72 },
+  { name: "Notion", Icon: NotionIcon, href: "https://notion.so", ring: 1, angle: 144 },
+  { name: "Runway", Icon: RunwayIcon, href: "https://runwayml.com", ring: 1, angle: 216 },
+  { name: "Copilot", Icon: CopilotIcon, href: "https://copilot.microsoft.com", ring: 1, angle: 288 },
+
+  { name: "ChatGPT", Icon: ChatGPTIcon, href: "https://chatgpt.com", ring: 2, angle: 30 },
+  { name: "Hugging Face", Icon: HuggingFaceIcon, href: "https://huggingface.co", ring: 2, angle: 120 },
+  { name: "lovable", Icon: LovableIcon, href: "https://lovable.dev", ring: 2, angle: 210 },
+  { name: "Perplexity", Icon: PerplexityIcon, href: "https://perplexity.ai", ring: 2, angle: 300 },
+
+  { name: "OpenAI", Icon: OpenAIIcon, href: "https://openai.com", ring: 3, angle: 60 },
+  { name: "Gemini", Icon: GeminiIcon, href: "https://gemini.google.com", ring: 3, angle: 150 },
+  { name: "Midjourney", Icon: MidjourneyIcon, href: "https://midjourney.com", ring: 3, angle: 240 },
+  { name: "Claude", Icon: ClaudeIcon, href: "https://claude.ai", ring: 3, angle: 330 },
 ];
+
+const RING_RADII = { 1: 140, 2: 240, 3: 350 };
+const RING_DURATIONS = { 1: 35, 2: 50, 3: 70 }; // Seconds for one full orbit
 
 export function Hero() {
   const { ref, inView } = useInView<HTMLDivElement>(0.1);
 
   return (
-    <section id="top" className="relative overflow-hidden pt-[72px] min-h-screen bg-[#05030b] text-white">
-      {/* Star layers */}
-      <div className="pointer-events-none absolute inset-0 hero-stars-1" />
-      <div className="pointer-events-none absolute inset-0 hero-stars-2" />
+    <section id="top" className="relative w-full overflow-hidden bg-[#05030b] text-white pt-24 min-h-screen flex flex-col justify-between">
+      
+      {/* ----------------- DENSE STARFIELD ----------------- */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="stars-layer stars-small" />
+        <div className="stars-layer stars-medium" />
+        <div className="stars-layer stars-large" />
+      </div>
 
-      {/* Main Container */}
-      <div className="relative mx-auto max-w-[1440px] px-6 pt-12 pb-32 lg:pt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">
+      {/* ----------------- MAIN CONTENT GRID ----------------- */}
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 flex-1">
+        
+        {/* LEFT: Text Content */}
+        <div ref={ref} className="flex flex-col justify-center max-w-xl xl:max-w-2xl pt-10 lg:pt-0">
+          <Reveal>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-mono tracking-[0.2em] text-white/80 uppercase backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_#a855f7]" />
+              Admissions Open · Batch 01
+            </div>
+          </Reveal>
+
+          <h1 className="mt-8 font-display text-[clamp(3rem,7vw,5.5rem)] font-black leading-[0.9] tracking-tight uppercase">
+            <span className={`block transition-all duration-1000 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
+              Build the Future.
+            </span>
+            <span 
+              className={`block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-200 transition-all duration-1000 delay-150 transform ${inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+              style={{ textShadow: "0 0 60px rgba(168, 85, 247, 0.4)" }}
+            >
+              Start Now.
+            </span>
+          </h1>
+
+          <Reveal delay={280} className="mt-8 flex items-center gap-3">
+            <div className="h-2 w-2 rotate-45 bg-purple-500 shadow-[0_0_10px_#a855f7]" />
+            <div className="h-px w-32 bg-gradient-to-r from-purple-500 to-transparent opacity-60" />
+          </Reveal>
+
+          <Reveal delay={340}>
+            <p className="mt-8 max-w-lg text-[17px] text-white/60 leading-relaxed font-light">
+              Spark Labs is a 6-week AI innovation program for students aged 12–25. No lectures.
+              No theory dumps. Just you, the right tools, and real-world projects that make an impact.
+            </p>
+          </Reveal>
+
+          <Reveal delay={440} className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <Link
+              to="/admissions"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-purple-600 px-8 py-4 text-[15px] font-semibold text-white shadow-[0_0_30px_rgba(147,51,234,0.4)] transition-all duration-300 hover:bg-purple-500 hover:shadow-[0_0_40px_rgba(147,51,234,0.6)] hover:-translate-y-0.5"
+            >
+              Apply for Admission
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <ApplyButton mode="counsel" variant="ghost" className="rounded-full border border-white/10 bg-white/5 px-8 py-4 text-[15px] text-white transition-all hover:bg-white/10 hover:border-white/20">
+              <CalendarCheck className="h-4 w-4 text-purple-400" />
+              Book a Free Counseling Session
+            </ApplyButton>
+          </Reveal>
+        </div>
+
+        {/* RIGHT: Dynamic Orbit System */}
+        <div className="relative flex items-center justify-center min-h-[500px] lg:min-h-full scale-[0.65] sm:scale-75 md:scale-90 lg:scale-100 origin-center lg:origin-right xl:origin-center mt-10 lg:mt-0 z-10">
           
-          {/* LEFT: Text Content */}
-          <div ref={ref} className="lg:col-span-5 z-10">
-            <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs font-mono tracking-widest text-white/80 uppercase">
-                <span className="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse" />
-                Admissions Open · Batch 01
-              </div>
-            </Reveal>
+          <div className="relative w-[10px] h-[10px]">
+            {/* Background Orbit Guide Rings */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" style={{ width: RING_RADII[1]*2, height: RING_RADII[1]*2 }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" style={{ width: RING_RADII[2]*2, height: RING_RADII[2]*2 }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" style={{ width: RING_RADII[3]*2, height: RING_RADII[3]*2 }} />
 
-            <h1 className="mt-6 font-display text-[clamp(2.5rem,6vw,4.8rem)] font-black leading-[0.95] tracking-tight uppercase">
-              <span className={`linemask ${inView ? "is-in" : ""}`}>Build the Future.</span>
-              <br />
-              <span className={`linemask text-purple-400 ${inView ? "is-in" : ""}`} style={{ ["--rd" as string]: "140ms" }}>
-                Start Now.
-              </span>
-            </h1>
-
-            <Reveal delay={280} className="mt-4 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rotate-45 bg-purple-400" />
-              <span className="h-px w-24 bg-gradient-to-r from-purple-400 to-transparent" />
-            </Reveal>
-
-            <Reveal delay={340}>
-              <p className="mt-6 max-w-lg text-base text-white/60 leading-relaxed">
-                Spark Labs is a 6-week AI innovation program for students aged 12–25. No lectures.
-                No theory dumps. Just you, the right tools, and real-world projects that make an impact.
-              </p>
-            </Reveal>
-
-            <Reveal delay={440} className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                to="/admissions"
-                className="inline-flex items-center gap-2 rounded-full bg-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all hover:bg-purple-500 hover:shadow-[0_0_30px_rgba(147,51,234,0.6)]"
-              >
-                Apply for Admission
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <ApplyButton mode="counsel" variant="ghost" className="rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm text-white hover:bg-white/10">
-                <CalendarCheck className="h-4 w-4 text-purple-400" />
-                Book a Free Counseling Session
-              </ApplyButton>
-            </Reveal>
-          </div>
-
-          {/* RIGHT: Spark Logo & Floating AI Tools */}
-          <div className="lg:col-span-7 relative h-[520px] w-full">
-            {/* Center Spark Icon */}
-            <div className="absolute top-[48%] left-[68%] -translate-x-1/2 -translate-y-1/2 z-20">
-              <div className="relative grid h-24 w-24 place-items-center rounded-full border border-purple-500/30 bg-[#080415] shadow-[0_0_50px_rgba(168,85,247,0.4)]">
-                <SparkMark className="h-12 w-12 text-white" />
+            {/* Core Spark Logo */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+              <div className="relative grid h-28 w-28 place-items-center rounded-full border border-purple-500/20 bg-[#080415] shadow-[0_0_80px_rgba(168,85,247,0.3)] backdrop-blur-md">
+                <SparkMark className="h-12 w-12 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
+                {/* Core pulse glow */}
+                <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-purple-500 duration-[3000ms]" />
               </div>
             </div>
 
-            {/* Orbit Rings Background */}
-            <div className="absolute top-[48%] left-[68%] -translate-x-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full border border-white/5 pointer-events-none" />
-            <div className="absolute top-[48%] left-[68%] -translate-x-1/2 -translate-y-1/2 h-[260px] w-[260px] rounded-full border border-white/5 pointer-events-none" />
+            {/* Orbiting Tools */}
+            {TOOLS.map((tool) => {
+              const radius = RING_RADII[tool.ring as keyof typeof RING_RADII];
+              const duration = RING_DURATIONS[tool.ring as keyof typeof RING_DURATIONS];
+              const delay = -1 * (tool.angle / 360) * duration; // Calculate exact delay to space them out
 
-            {/* Tool Pills */}
-            {TOOL_NODES.map((tool) => (
-              <a
-                key={tool.name}
-                href={tool.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ top: tool.top, left: tool.left }}
-                className="absolute z-30 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 rounded-xl border border-white/10 bg-[#0c081c]/80 px-3 py-1.5 text-xs font-medium backdrop-blur-md transition-all hover:scale-105 hover:border-purple-400/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.3)] animate-float"
-              >
-                <tool.Icon />
-                <span>{tool.name}</span>
-              </a>
-            ))}
+              return (
+                <div key={tool.name} className="absolute top-1/2 left-1/2 z-30" style={{ width: 0, height: 0 }}>
+                  <div 
+                    className="absolute top-0 left-0 flex items-center justify-center animate-spin-orbit"
+                    style={{ animationDuration: `${duration}s`, animationDelay: `${delay}s` }}
+                  >
+                    <div style={{ transform: `translateY(-${radius}px)` }}>
+                      <div 
+                        className="flex items-center justify-center animate-counter-spin"
+                        style={{ animationDuration: `${duration}s`, animationDelay: `${delay}s` }}
+                      >
+                        <a
+                          href={tool.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-2.5 rounded-full border border-white/10 bg-[#0c081c]/90 px-3.5 py-2 text-xs font-medium text-white/90 backdrop-blur-xl transition-all duration-300 hover:scale-110 hover:border-purple-500/60 hover:bg-[#130d26] hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] whitespace-nowrap"
+                        >
+                          <tool.Icon />
+                          <span>{tool.name}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
         </div>
       </div>
 
-      {/* BOTTOM PLANET HORIZON */}
-      <div className="relative z-20 w-full">
-        {/* Planet Arc Glow */}
-        <div className="absolute left-1/2 -top-12 -translate-x-1/2 w-[140%] h-[300px] rounded-[100%] bg-gradient-to-t from-purple-900/20 via-purple-600/10 to-transparent blur-2xl pointer-events-none" />
+      {/* ----------------- BOTTOM PLANET & STATS ----------------- */}
+      <div className="relative mt-20 pt-32 lg:pt-40 w-full overflow-hidden flex flex-col items-center justify-end z-20">
         
-        {/* Planet Surface Line */}
-        <div className="relative mx-auto max-w-6xl rounded-t-[100px] border-t border-purple-500/30 bg-[#070412]/90 backdrop-blur-xl px-8 pt-8 pb-12 shadow-[0_-20px_50px_rgba(147,51,234,0.15)]">
+        {/* Moving Planet Background Element */}
+        <div className="absolute bottom-[-150px] sm:bottom-[-200px] left-1/2 -translate-x-1/2 w-[150vw] min-w-[1200px] h-[400px] sm:h-[600px]">
+          {/* Planet Body with gentle rotating movement */}
+          <div className="w-full h-full rounded-[50%_50%_0_0] border-t border-purple-500/40 bg-gradient-to-b from-[#13072e] via-[#05030b] to-[#05030b] shadow-[inset_0_50px_100px_rgba(147,51,234,0.15)] animate-planet-breathe" />
           
-          {/* Stats Bar */}
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 border border-white/10 rounded-2xl bg-white/5 p-4 backdrop-blur-md">
+          {/* Intense Lens Flare on Horizon */}
+          <div className="absolute top-[-50px] left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.6)_0%,rgba(168,85,247,0.15)_40%,transparent_70%)] blur-[40px] pointer-events-none" />
+          <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 w-[300px] h-[50px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.8)_0%,rgba(216,180,254,0.4)_40%,transparent_70%)] blur-[10px] pointer-events-none" />
+        </div>
+
+        {/* Stats Pill - Sitting exactly on the planet curve */}
+        <Reveal delay={500} className="relative z-30 w-full max-w-5xl px-6 mb-8">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 rounded-3xl border border-white/10 bg-[#0c081c]/70 p-4 sm:p-6 shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
             <StatPill Icon={Users} value="32+" label="Students per batch" />
             <StatPill Icon={FlaskConical} value="16+" label="Hands-on projects" />
             <StatPill Icon={Clock} value="21 Days" label="Intensive journey" />
             <StatPill Icon={Rocket} value="Real World" label="Impact driven" />
           </div>
+        </Reveal>
 
-          <div className="mt-8 text-center">
-            <p className="font-mono text-xs font-semibold tracking-[0.3em] text-purple-400 uppercase">
-              Learn. Build. Ship. Impact.
-            </p>
-            <p className="mt-1 text-xs text-white/40">
-              Supported by the world's most powerful AI tools.
-            </p>
-          </div>
-        </div>
+        {/* Bottom Tagline */}
+        <Reveal delay={600} className="relative z-30 pb-12 text-center">
+          <p className="font-mono text-[11px] sm:text-xs font-bold tracking-[0.3em] text-purple-400 uppercase drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+            Learn. Build. Ship. Impact.
+          </p>
+          <p className="mt-2 text-xs text-white/40 font-light">
+            Supported by the world's most powerful AI tools.
+          </p>
+        </Reveal>
       </div>
 
+      {/* ----------------- STYLES ----------------- */}
       <style>{`
-        .hero-stars-1 {
-          background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent), radial-gradient(1px 1px at 30% 45%, #fff, transparent), radial-gradient(1px 1px at 70% 25%, #fff, transparent), radial-gradient(1px 1px at 85% 75%, #fff, transparent);
-          animation: twinkle 4s ease-in-out infinite alternate;
+        /* Mathematical Orbit Animations */
+        @keyframes spin-orbit {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
-        .hero-stars-2 {
-          background-image: radial-gradient(1px 1px at 20% 75%, #fff, transparent), radial-gradient(1px 1px at 50% 15%, #fff, transparent), radial-gradient(1px 1px at 90% 35%, #fff, transparent);
-          animation: twinkle 6s ease-in-out infinite alternate;
+        @keyframes counter-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
         }
-        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 1; } }
-        @keyframes float {
-          0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-          50% { transform: translate(-50%, -50%) translateY(-6px); }
+        .animate-spin-orbit {
+          animation-name: spin-orbit;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
+        .animate-counter-spin {
+          animation-name: counter-spin;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
+
+        /* Planet Movement */
+        @keyframes planet-breathe {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-10px) scale(1.02); }
+        }
+        .animate-planet-breathe {
+          animation: planet-breathe 10s ease-in-out infinite;
+        }
+
+        /* Twinkling Starfield Generator */
+        .stars-layer {
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          width: 100%; height: 100%;
+        }
+        
+        /* Using multiple box-shadows to generate random-looking stars */
+        .stars-small {
+          background: transparent;
+          box-shadow: 
+            15vw 20vh 1px 0px rgba(255,255,255,0.8),
+            80vw 10vh 1px 0px rgba(255,255,255,0.6),
+            50vw 50vh 1px 0px rgba(255,255,255,0.9),
+            20vw 80vh 1px 0px rgba(255,255,255,0.7),
+            90vw 70vh 1px 0px rgba(255,255,255,0.5),
+            40vw 15vh 1px 0px rgba(255,255,255,0.8),
+            60vw 85vh 1px 0px rgba(255,255,255,0.9),
+            10vw 40vh 1px 0px rgba(255,255,255,0.6),
+            75vw 35vh 1px 0px rgba(255,255,255,0.7),
+            30vw 60vh 1px 0px rgba(255,255,255,0.8);
+          animation: twinkle-1 4s ease-in-out infinite alternate;
+        }
+
+        .stars-medium {
+          background: transparent;
+          box-shadow: 
+            25vw 30vh 2px 0px rgba(255,255,255,0.7),
+            65vw 20vh 1.5px 0px rgba(216,180,254,0.8),
+            85vw 60vh 2px 0px rgba(255,255,255,0.6),
+            15vw 70vh 1.5px 0px rgba(255,255,255,0.9),
+            45vw 85vh 2px 0px rgba(216,180,254,0.7),
+            5vw 10vh 1.5px 0px rgba(255,255,255,0.8),
+            95vw 90vh 2px 0px rgba(255,255,255,0.7),
+            55vw 45vh 1.5px 0px rgba(216,180,254,0.9);
+          animation: twinkle-2 6s ease-in-out infinite alternate-reverse;
+        }
+
+        .stars-large {
+          background: transparent;
+          box-shadow: 
+            35vw 40vh 2.5px 0px rgba(255,255,255,0.9),
+            70vw 5vh 3px 0px rgba(216,180,254,0.8),
+            20vw 90vh 2.5px 0px rgba(255,255,255,0.7),
+            80vw 80vh 3px 0px rgba(255,255,255,0.9);
+          animation: twinkle-3 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle-1 { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+        @keyframes twinkle-2 { 0% { opacity: 0.1; } 100% { opacity: 0.8; } }
+        @keyframes twinkle-3 { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.2); } }
       `}</style>
     </section>
   );
@@ -224,13 +331,13 @@ export function Hero() {
 
 function StatPill({ Icon, value, label }: { Icon: any; value: string; label: string }) {
   return (
-    <div className="flex items-center gap-3 px-2">
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+    <div className="flex flex-col xl:flex-row items-center xl:items-start gap-3 p-2 text-center xl:text-left">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[inset_0_0_15px_rgba(168,85,247,0.2)]">
         <Icon className="h-4 w-4" />
       </span>
       <div className="leading-tight">
-        <div className="font-display text-base font-bold text-white">{value}</div>
-        <div className="font-mono text-[9px] tracking-wider text-white/40 uppercase">{label}</div>
+        <div className="font-display text-lg sm:text-xl font-bold text-white">{value}</div>
+        <div className="mt-1 font-mono text-[9px] sm:text-[10px] tracking-widest text-white/50 uppercase">{label}</div>
       </div>
     </div>
   );
