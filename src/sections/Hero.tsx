@@ -1,7 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarCheck, MapPin, Users, Terminal } from "lucide-react";
-import { ApplyButton, CountUp, Reveal, SparkMark, useInView } from "@/components/ui";
+import { ArrowRight, CalendarCheck, Users, FlaskConical, Clock, Rocket } from "lucide-react";
+import { ApplyButton, Reveal, SparkMark } from "@/components/ui";
+
+function useInView<T extends HTMLElement>(threshold = 0.18) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold, rootMargin: "0px 0px -8% 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
 
 const MARQUEE = [
   "Prompt Engineering",
