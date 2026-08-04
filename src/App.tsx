@@ -1,8 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { ApplyProvider } from "@/components/ui";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { RootLayout } from "@/layouts/RootLayout";
 import { AdminLayout } from "@/layouts/AdminLayout";
+import { PreloaderScreen } from "@/components/PreloaderScreen";
 
 /* Public pages */
 import Home from "@/pages/Home";
@@ -30,9 +32,38 @@ import { AdminContent, AdminSettings } from "@/pages/admin/ContentAndSettings";
 import AdminMedia from "@/pages/admin/MediaLibrary";
 
 export default function App() {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
+  // Only show preloader once per session, and only on the home route first load
+  const [showPreloader, setShowPreloader] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const alreadyShown = sessionStorage.getItem("sparkPreloaderShown");
+    return !alreadyShown && window.location.pathname === "/";
+  });
+
+  useEffect(() => {
+    if (showPreloader) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showPreloader]);
+
+  const handlePreloaderFinish = () => {
+    sessionStorage.setItem("sparkPreloaderShown", "1");
+    setShowPreloader(false);
+  };
+
   return (
     <ErrorBoundary>
       <ApplyProvider>
+        {showPreloader && isHome && (
+          <PreloaderScreen onFinish={handlePreloaderFinish} />
+        )}
         <Routes>
           {/* Public site */}
           <Route element={<RootLayout />}>
